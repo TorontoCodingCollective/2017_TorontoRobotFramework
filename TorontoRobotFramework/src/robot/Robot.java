@@ -35,7 +35,6 @@ public class Robot extends IterativeRobot {
 //		oi.robotInit();
 		chassisSubsystem.robotInit();
 
-		
 		chooser = new SendableChooser();
         chooser.addDefault("Default Auto", new JoystickCommand());
 //        chooser.addObject("My Auto", new MyAutoCommand());
