@@ -2,6 +2,7 @@
 package robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -31,6 +32,8 @@ public class ChassisSubsystem extends Subsystem {
 			return -super.getAngle();
 		}
 	};
+	
+	private AnalogInput ultrasonicSensor = new AnalogInput(3);
 
 	/* ****************************************************************************
      * Put methods for controlling this subsystem here.
@@ -84,6 +87,7 @@ public class ChassisSubsystem extends Subsystem {
 		SmartDashboard.putData("Gyro", gyro);
 		SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
 		SmartDashboard.putNumber("Gyro Rate", gyro.getRate());
+		SmartDashboard.putNumber("Raw Ultrasonic Value", ultrasonicSensor.getValue());
 	}
 	
 	private double calcPIDValue(double setPoint, double feedback) {
