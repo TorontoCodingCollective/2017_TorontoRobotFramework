@@ -19,7 +19,7 @@ public class RobotConst {
     public static final double GYRO_PROPORTIONAL_GAIN = .05; // % per degree.
     
     /** Drive PID proportional gain */
-    public static final double DRIVE_PID_PROPORTIONAL_GAIN = 1.0;
+    public static final double DRIVE_PID_PROPORTIONAL_GAIN = 0.50;
     
     /** Gyro Sensitivity for calibration of the rotational rate of the gyro */
     public static final double GYRO_SENSITIVITY = .0011;

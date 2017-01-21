@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.RobotConst;
 import robot.RobotMap;
-import robot.commands.JoystickCommand;
+import robot.commands.T_GameControllerDriveCommand;
 
 public class ChassisSubsystem extends Subsystem {
 
@@ -38,7 +38,7 @@ public class ChassisSubsystem extends Subsystem {
 	 ******************************************************************************/
 
     public void initDefaultCommand() {
-        setDefaultCommand(new JoystickCommand());
+        setDefaultCommand(new T_GameControllerDriveCommand());
     }
     
     public void setBothMotorSpeeds(double speed) {
