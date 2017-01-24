@@ -60,7 +60,7 @@ public class AutoSelector {
 		switch (shootMode.getSelected()) {
 		case "Gear":      return ShootMode.GEAR_ONLY;
 		case "GearShoot": return BoilerPosition.RIGHT;
-		default:         return BoilerPosition.LEFT;
+		default:          return BoilerPosition.LEFT;
 		}
 	}		
 		
