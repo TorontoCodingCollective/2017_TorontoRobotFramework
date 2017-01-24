@@ -42,9 +42,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class OI {
 	
-	T_OiController driverController = new T_Logitech_GameController(0);
+	public AutoSelector autoSelector = new AutoSelector();
+
+	private T_OiController driverController = new T_Logitech_GameController(0);
 	
-	T_Toggle driverTestToggle = new T_Toggle(driverController, T_Button.BACK);
+	private T_Toggle driverTestToggle = new T_Toggle(driverController, T_Button.BACK);
 	
 	public boolean getDriverRumbleStart() {
 		return driverController.getButton(T_Button.RIGHT_BUMPER);
