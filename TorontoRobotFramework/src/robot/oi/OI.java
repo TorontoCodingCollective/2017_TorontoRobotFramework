@@ -85,6 +85,7 @@ public class OI {
 	}
 	
 	public void updateSmartDashboard() {
+		autoSelector.updateSmartDashboard();
 		SmartDashboard.putString("Driver Controller", 
 				driverController.toString());
 		SmartDashboard.putBoolean("Toggle", getDriverToggle());
