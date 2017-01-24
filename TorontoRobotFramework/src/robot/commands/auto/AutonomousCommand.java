@@ -1,6 +1,10 @@
 package robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import robot.Robot;
+import robot.oi.AutoSelector.BoilerPosition;
+import robot.oi.AutoSelector.RobotPosition;
+import robot.oi.AutoSelector.ShootMode;
 
 /**
  * This is the auto command that will use the operator input to build the correct command
@@ -8,6 +12,14 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutonomousCommand extends CommandGroup {
 
     public AutonomousCommand() {
+    	
+    	RobotPosition  robotPosition  = Robot.oi.autoSelector.getRobotPostion();
+    	BoilerPosition boilerPosition = Robot.oi.autoSelector.getBoilerPostion();
+    	ShootMode      shootMode      = Robot.oi.autoSelector.getShootMode();
+    	
+    	System.out.println("Robot Position " + robotPosition);
+    	System.out.println("Boiler Position " + boilerPosition);
+    	System.out.println("Shoot Mode " + shootMode);
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoSelector {
 
-	enum RobotPosition { CENTER, LEFT, RIGHT };
-	enum BoilerPosition { LEFT, RIGHT };
-	enum ShootMode { GEAR_ONLY, GEAR_SHOOT, SHOOT_GEAR };
+	public enum RobotPosition { CENTER, LEFT, RIGHT };
+	public enum BoilerPosition { LEFT, RIGHT };
+	public enum ShootMode { GEAR_ONLY, GEAR_SHOOT, SHOOT_GEAR };
 	
 	SendableChooser<String> robotPosition;
 	SendableChooser<String> boilerPosition;
