@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.commands.auto.AutonomousCommand;
 import robot.oi.OI;
 import robot.subsystems.ChassisSubsystem;
@@ -70,7 +71,9 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-    	autoCommand.cancel();
+    	if (autoCommand != null) {
+    		autoCommand.cancel();
+    	}
     }
 
     /**
@@ -92,6 +95,7 @@ public class Robot extends IterativeRobot {
     }
     
     private void updateSmartDashboard() {
+    	SmartDashboard.putData("Scheduler", Scheduler.getInstance());
     	oi.updateSmartDashboard();
     	chassisSubsystem.updateSmartDashboard();
     }

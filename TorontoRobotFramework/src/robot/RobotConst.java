@@ -5,6 +5,13 @@ package robot;
  */
 public class RobotConst {
 
+	/** WpiLib compatible inverted indicator {@code boolean true} which can be 
+	 * used to make the robot code more readable */
+	public static final boolean INVERTED     = true;
+	/** WpiLib compatible NOT inverted indicator {@code boolean false} which can be 
+	 * used to make the robot code more readable */
+	public static final boolean NOT_INVERTED = false;
+	
 	/** 
 	 * Max Drive Speed is the maximum encoder feedback rate that is received from the 
 	 * drive encoders with an unloaded robot (robot on blocks).  This represents the 
@@ -16,12 +23,16 @@ public class RobotConst {
     public static final double DRIVE_ENCODER_COUNTS_PER_FT = 300.0;
     
     /** Gyro PID proportional gain */
-    public static final double GYRO_PROPORTIONAL_GAIN = .05; // % per degree.
+    public static final double GYRO_PROPORTIONAL_GAIN = 6.0;
+    public static final double GYRO_INTEGRAL_GAIN = .1;
+    
+    /** Gyro in-place pivot speed used when under gyro control */
+    public static final double GYRO_PIVOT_SPEED = .7; 
     
     /** Drive PID proportional gain */
     public static final double DRIVE_PID_PROPORTIONAL_GAIN = 1.0;
     
     /** Gyro Sensitivity for calibration of the rotational rate of the gyro */
-    public static final double GYRO_SENSITIVITY = .0011;
+    public static final double GYRO_SENSITIVITY = .00172;
     
 }

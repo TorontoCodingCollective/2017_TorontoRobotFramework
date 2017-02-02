@@ -8,16 +8,17 @@ package robot;
 public class RobotMap {
 
 	// PWM Ports
-    public static final int LEFT_MOTOR  = 0;
-    public static final int RIGHT_MOTOR = 1;
+    public static final int LEFT_MOTOR_PWM_PORT  = 0;
+    public static final int RIGHT_MOTOR_PWM_PORT = 1;
 
     // Digital IO Ports
-    public static final int LEFT_ENCODER_A = 0;
-    public static final int LEFT_ENCODER_B = 1;
-    public static final int RIGHT_ENCODER_A = 2;
-    public static final int RIGHT_ENCODER_B = 3;
+    public static final int LEFT_ENCODER_A_DIO_PORT  = 0;
+    public static final int LEFT_ENCODER_B_DIO_PORT  = 1;
+    
+    public static final int RIGHT_ENCODER_A_DIO_PORT = 2;
+    public static final int RIGHT_ENCODER_B_DIO_PORT = 3;
     
     // Analog Input Ports
-    public static final int GYRO = 0;
+    public static final int GYRO_ANALOG_INPUT_PORT = 0;
     
 }

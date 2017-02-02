@@ -42,7 +42,7 @@ public class DriveStraightCommand extends Command {
     	// Look for Joystick movement - and then end
     	if (Robot.oi.isDriverAction()) { return true; }
     	
-    	return Math.abs(Robot.chassisSubsystem.getEncoderDistance()) >= encoderDistance;
+    	return Math.abs(Robot.chassisSubsystem.getEncoderDistanceInches()) >= encoderDistance;
     }
 
 	@Override

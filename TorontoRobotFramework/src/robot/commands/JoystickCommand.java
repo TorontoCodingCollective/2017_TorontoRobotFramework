@@ -4,13 +4,18 @@ package robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import robot.Robot;
+import robot.commands.auto.RotateToHeadingCommand;
 
 /**
  *
  */
 public class JoystickCommand extends Command {
 
-	private boolean wasStartDriveStraightButtonReleased = false;
+	enum ButtonState { PRESSED, RELEASED };
+	
+	ButtonState driveStraightState = ButtonState.RELEASED;
+	ButtonState povState           = ButtonState.RELEASED;
+	ButtonState calibrateState     = ButtonState.RELEASED;
 	
     public JoystickCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -24,25 +29,53 @@ public class JoystickCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     
-    	if (wasStartDriveStraightButtonReleased) {
+    	switch (driveStraightState) {
+    	case RELEASED:
 	    	if (Robot.oi.getStartDriveStraightCommand()) {
 	    		Scheduler.getInstance().add(new DriveStraightCommand(3, .5, 5));
-	    		wasStartDriveStraightButtonReleased = false;
+	    		driveStraightState = ButtonState.PRESSED;
 	    		return;
 	    	}
-    	}
-    	else {
-    		wasStartDriveStraightButtonReleased = 
-    				! Robot.oi.getStartDriveStraightCommand();
+        	break;
+    	case PRESSED:
+    		if (! Robot.oi.getStartDriveStraightCommand()) {
+    			driveStraightState = ButtonState.RELEASED;
+    		}
+    		break;
     	}
     	
-    	if (Robot.oi.getStartDriveStraightWithGyroCommand()) {
-    		Scheduler.getInstance().add(new DriveStraightWithGyroCommand(12, .5, 10));
+    	switch (povState) {
+    	case RELEASED:
+    		double angle = Robot.oi.getRotateToAngle();
+    		if (angle >= 0) {
+	    		Scheduler.getInstance().add(new RotateToHeadingCommand(angle));
+	    		povState = ButtonState.PRESSED;
+	    		return;
+	    	}
+        	break;
+    	case PRESSED:
+    		if (Robot.oi.getRotateToAngle() < 0) {
+    			povState = ButtonState.RELEASED;
+    		}
+    		break;
     	}
     	
     	if (Robot.oi.getDriverRumbleStart()) { Robot.oi.setDriverRumble(0.8); }
     	else  								 { Robot.oi.setDriverRumble(0); }
     	
+    	switch (calibrateState) {
+    	case RELEASED:
+	    	if (Robot.oi.getCalibrate()) {
+	    		Robot.chassisSubsystem.calibrateGyro();
+	    		calibrateState = ButtonState.PRESSED;
+	    	}
+	    	break;
+    	case PRESSED:
+    		if (! Robot.oi.getCalibrate()) {
+    			calibrateState = ButtonState.RELEASED;
+    		}
+    	}
+	    	
     	double speed = Robot.oi.getSpeed();
     	double turn  = Robot.oi.getTurn();
     	

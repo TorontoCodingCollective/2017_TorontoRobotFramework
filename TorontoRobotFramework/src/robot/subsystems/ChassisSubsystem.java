@@ -1,7 +1,9 @@
 
 package robot.subsystems;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
+import com.toronto.pid.T_GyroPidController;
+import com.toronto.sensors.T_Gyro;
+
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Victor;
@@ -18,20 +20,18 @@ public class ChassisSubsystem extends Subsystem {
 	 * 
 	 * Declare all motors and sensors here
 	 ******************************************************************************/
-	private Victor leftMotor  = new Victor(RobotMap.LEFT_MOTOR);
-	private Victor rightMotor = new Victor(RobotMap.RIGHT_MOTOR);
+	private Victor leftMotor  = new Victor(RobotMap.LEFT_MOTOR_PWM_PORT);
+	private Victor rightMotor = new Victor(RobotMap.RIGHT_MOTOR_PWM_PORT);
 	
 	private Encoder leftEncoder = 
-			new Encoder(RobotMap.LEFT_ENCODER_A, RobotMap.LEFT_ENCODER_B);
+			new Encoder(RobotMap.LEFT_ENCODER_A_DIO_PORT,  RobotMap.LEFT_ENCODER_B_DIO_PORT);
 	private Encoder rightEncoder = 
-			new Encoder(RobotMap.RIGHT_ENCODER_A, RobotMap.RIGHT_ENCODER_B, true);
+			new Encoder(RobotMap.RIGHT_ENCODER_A_DIO_PORT, RobotMap.RIGHT_ENCODER_B_DIO_PORT, RobotConst.INVERTED);
 	
-	private AnalogGyro gyro = new AnalogGyro(RobotMap.GYRO) {
-		@Override
-		public double getAngle() {
-			return -super.getAngle();
-		}
-	};
+	private T_Gyro gyro = new T_Gyro(RobotMap.GYRO_ANALOG_INPUT_PORT, RobotConst.INVERTED);
+
+	T_GyroPidController gyroPidController = 
+			new T_GyroPidController(RobotConst.GYRO_PROPORTIONAL_GAIN, RobotConst.GYRO_INTEGRAL_GAIN, gyro);
 	
 	private AnalogInput ultrasonicSensor = new AnalogInput(3);
 
@@ -50,6 +50,8 @@ public class ChassisSubsystem extends Subsystem {
     }
     
     public void setMotorSpeeds(double leftSpeed, double rightSpeed) {
+//    	leftMotor.set(leftSpeed);
+//    	rightMotor.set(rightSpeed);
     	leftMotor .set(calcPIDValue(leftSpeed, leftEncoder.getRate()));
     	rightMotor.set(calcPIDValue(rightSpeed, rightEncoder.getRate()));
     }
@@ -66,6 +68,7 @@ public class ChassisSubsystem extends Subsystem {
 		
 		gyro.initGyro();
 		gyro.setSensitivity(RobotConst.GYRO_SENSITIVITY);
+		gyroPidController.disable();
 	}
 
 	public void resetEncoders() {
@@ -73,11 +76,53 @@ public class ChassisSubsystem extends Subsystem {
 		leftEncoder.reset();
 	}
 	
-	public double getAngle() {
-		return gyro.getAngle() % 360.0;
+	public void enableGyroPid() {
+		if (!gyroPidController.isEnabled()) {
+			gyroPidController.enable();
+		}
+	}
+
+	public void calibrateGyro() {
+		gyro.reset();
+		gyro.calibrate();
+	}
+
+	public void disableGyroPid() {
+		if (gyroPidController.isEnabled()) {
+			gyroPidController.disable();
+		}
 	}
 	
-	public double getEncoderDistance() {
+	public double getGyroPidOutput() {
+		return gyroPidController.calculatePidOutput();
+	}
+	
+	public void setGyroPidSetpoint(double angle) {
+		gyroPidController.setSetpoint(angle);
+	}
+	
+	public double getAngle() {
+		return gyro.getAngle();
+	}
+
+	public double getAngleRate() {
+		return gyro.getRate();
+	}
+
+	public double getAngleError(double heading) {
+		
+		// FIXME:  Move this code to the T_GYRO class
+		// return gyro.getAngleError(heading);
+		
+    	double angleError = heading - getAngle();
+    	
+    	if (angleError > 180.0)  { angleError -= 360.0; }
+    	if (angleError < -180.0) { angleError += 360.0; }
+    	
+    	return angleError;
+	}
+	
+	public double getEncoderDistanceInches() {
 		return (rightEncoder.getDistance() + leftEncoder.getDistance()) / 2;
 	}
 	
@@ -86,8 +131,11 @@ public class ChassisSubsystem extends Subsystem {
 		SmartDashboard.putData("Right Encoder", rightEncoder);
 		SmartDashboard.putData("Gyro", gyro);
 		SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
-		SmartDashboard.putNumber("Gyro Rate", gyro.getRate());
+		SmartDashboard.putNumber("Gyro Rate",  gyro.getRate());
+		SmartDashboard.putNumber("Gyro PID Error", gyroPidController.getError());
+		SmartDashboard.putNumber("Gyro PID Output", gyroPidController.get());
 		SmartDashboard.putNumber("Raw Ultrasonic Value", ultrasonicSensor.getValue());
+		SmartDashboard.putData("Gyro PID", gyroPidController);
 	}
 	
 	private double calcPIDValue(double setPoint, double feedback) {

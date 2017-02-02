@@ -37,7 +37,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Start:		
  * Back:		Toggle (test)
  * 
- * POV:       	Go Straight Using Gyro Command
+ * POV:       	RotateToAngle
  *
  */
 public class OI {
@@ -64,12 +64,12 @@ public class OI {
 		return driverTestToggle.getValue();
 	}
 	
-	public boolean getStartDriveStraightWithGyroCommand() {
-		return driverController.getPov() == 0;
+	public int getRotateToAngle() {
+		return driverController.getPov();
 	}
 	
 	public double getTurn() {
-		return driverController.getAxis(T_Stick.LEFT, T_Axis.Y);
+		return driverController.getAxis(T_Stick.LEFT, T_Axis.X);
 	}
 
 	public boolean isDriverAction() {
@@ -80,6 +80,14 @@ public class OI {
 		driverController.setRumble(rumble);
 	}
 
+	public boolean getCancel() {
+		return driverController.getButton(T_Button.BACK);
+	}
+	
+	public boolean getCalibrate() {
+		return driverController.getButton(T_Button.START);
+	}
+	
 	public void teleopPeriodic() {
 		driverTestToggle.update();
 	}

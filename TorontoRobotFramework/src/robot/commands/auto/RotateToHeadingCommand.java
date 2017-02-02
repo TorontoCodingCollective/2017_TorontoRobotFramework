@@ -2,6 +2,7 @@
 package robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 import robot.RobotConst;
 
@@ -11,12 +12,11 @@ import robot.RobotConst;
  *  <p>
  *  This command should be extended for other types of auto drive commands.
  */
-public abstract class DriveOnHeadingCommand extends Command {
+public class RotateToHeadingCommand extends Command {
 
 	private enum Step { COARSE, FINE };
 	
 	protected double heading;
-	protected double setSpeed;
 	
 	private Step step = Step.COARSE;
 	
@@ -28,11 +28,10 @@ public abstract class DriveOnHeadingCommand extends Command {
 	 * @param heading to drive in degrees (0 to 360)
 	 * @param speed to drive (-1.0 to 1.0).
 	 */
-    public DriveOnHeadingCommand(double heading, double speed) {
+    public RotateToHeadingCommand(double heading) {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.chassisSubsystem);
         this.heading  = heading;
-        this.setSpeed = speed;
     }
 
     // Called just before this Command runs the first time
@@ -60,6 +59,8 @@ public abstract class DriveOnHeadingCommand extends Command {
     	
     	double angleError = Robot.chassisSubsystem.getAngleError(heading);
     	
+    	SmartDashboard.putNumber("heading", heading);
+    	SmartDashboard.putNumber("angleError", angleError);
     	switch (step) {
     	
     	case COARSE:
@@ -74,55 +75,41 @@ public abstract class DriveOnHeadingCommand extends Command {
     		// Turn off the pid control for the gyro.
     		Robot.chassisSubsystem.disableGyroPid();
     		
-        	if (Math.abs(angleError) < 25.0d) { 
-        		step = Step.FINE;
-        		enableGyroPid();
-        		break;
-        	}
-
         	// Pivot based on the error direction
-        	if (angleError < 0d) {
+        	if (angleError > 0d) {
         		
-        		// If the angle error is negative, then turn clockwise to close the error
+        		// If the angle error is positive, then turn clockwise to close the error
         		leftSpeed  =   RobotConst.GYRO_PIVOT_SPEED;
         		rightSpeed = - RobotConst.GYRO_PIVOT_SPEED;
         		
         	} else {
         		
-        		// If the angle error is negative, then turn clockwise to close the error
+        		// If the angle error is negative, then turn counter clockwise to close the error
         		leftSpeed  = - RobotConst.GYRO_PIVOT_SPEED;
         		rightSpeed =   RobotConst.GYRO_PIVOT_SPEED;
 
         	}
+
+        	if (Math.abs(angleError) < 30.0d) { 
+        		step = Step.FINE;
+        		enableGyroPid();
+        	}
+
         	break;
 			
     	case FINE:
 
-    		// Get the PID output and use it to steer the robot by adjusting the speed
-    		// downward on the appropriate side of the robot to bring it back into 
-    		// alignment.
+    		// Get the PID output and use it to rotate the robot.
     		double gyroPidOutput = Robot.chassisSubsystem.getGyroPidOutput();
     		
-    		leftSpeed  = setSpeed;
-    		rightSpeed = setSpeed;
+    		// Limit the PID output to the pivot speed so that the robot does 
+    		// not speed up past the max pivot speed when turning.
+    		if (Math.abs(gyroPidOutput) > RobotConst.GYRO_PIVOT_SPEED) {
+    			gyroPidOutput = Math.signum(gyroPidOutput) * RobotConst.GYRO_PIVOT_SPEED;
+    		}
     		
-    		// FIXME:
-    		// Slow down one motor based on the error.
-			if (gyroPidOutput > 0) {
-				
-	    		rightSpeed -= gyroPidOutput * RobotConst.GYRO_PROPORTIONAL_GAIN * setSpeed;
-	    		if (rightSpeed < -setSpeed) {
-	    			 rightSpeed = -setSpeed;
-	    		}
-	    		
-	    	}
-	    	else {
-	    		leftSpeed -=  -angleError * RobotConst.GYRO_PROPORTIONAL_GAIN * setSpeed;
-	    		if (leftSpeed < -setSpeed) {
-	    			leftSpeed = -setSpeed;
-	    		}
-	    	}
-    		break;
+    		leftSpeed  =  gyroPidOutput;
+    		rightSpeed = -gyroPidOutput;
     		
     	}
     	
@@ -136,5 +123,10 @@ public abstract class DriveOnHeadingCommand extends Command {
 		Robot.chassisSubsystem.enableGyroPid();
 		Robot.chassisSubsystem.setGyroPidSetpoint(heading);
 		
+    }
+    
+    @Override
+    public boolean isFinished() {
+    	return Robot.oi.getCancel();
     }
 }
