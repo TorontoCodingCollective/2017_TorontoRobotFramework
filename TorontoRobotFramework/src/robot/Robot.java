@@ -1,6 +1,11 @@
 
 package robot;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.toronto.subsystems.T_Subsystem;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -19,10 +24,15 @@ import robot.subsystems.ChassisSubsystem;
  */
 public class Robot extends IterativeRobot {
 
+	public static List<T_Subsystem> subsystemLs = new ArrayList<T_Subsystem>();
 	public static final ChassisSubsystem chassisSubsystem = new ChassisSubsystem();
 	public static OI oi;
 
 	private Command autoCommand;
+	
+	public Robot() {
+		subsystemLs.add(chassisSubsystem);
+	}
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -30,7 +40,10 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
 		oi = new OI();
 //		oi.robotInit();
-		chassisSubsystem.robotInit();
+    	for (T_Subsystem subsystem: subsystemLs) {
+    		subsystem.robotInit();
+    	}
+    	SmartDashboard.putData("Scheduler", Scheduler.getInstance());
     }
 	
 	/**
@@ -43,10 +56,8 @@ public class Robot extends IterativeRobot {
     }
 	
 	public void disabledPeriodic() {
-
 		Scheduler.getInstance().run();
-		
-		updateSmartDashboard();
+		updatePeriodic();
 	}
 
 	/**
@@ -68,6 +79,7 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+        updatePeriodic();
     }
 
     public void teleopInit() {
@@ -84,7 +96,7 @@ public class Robot extends IterativeRobot {
         
         oi.teleopPeriodic();
         
-        updateSmartDashboard();
+        updatePeriodic();
     }
     
     /**
@@ -93,11 +105,12 @@ public class Robot extends IterativeRobot {
     public void testPeriodic() {
         LiveWindow.run();
     }
-    
-    private void updateSmartDashboard() {
-    	SmartDashboard.putData("Scheduler", Scheduler.getInstance());
-    	oi.updateSmartDashboard();
-    	chassisSubsystem.updateSmartDashboard();
+
+    private void updatePeriodic() {
+    	oi.updatePeriodic();
+    	for (T_Subsystem subsystem: subsystemLs) {
+    		subsystem.updatePeriodic();
+    	}
     }
     		
 }

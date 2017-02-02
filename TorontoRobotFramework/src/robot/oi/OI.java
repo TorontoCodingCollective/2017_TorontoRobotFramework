@@ -92,7 +92,8 @@ public class OI {
 		driverTestToggle.update();
 	}
 	
-	public void updateSmartDashboard() {
+	public void updatePeriodic() {
+		
 		autoSelector.updateSmartDashboard();
 		SmartDashboard.putString("Driver Controller", 
 				driverController.toString());
