@@ -44,7 +44,7 @@ public class OI {
 	
 	T_OiController driverController = new T_Logitech_GameController(0);
 	
-	T_Toggle driverTestToggle = new T_Toggle(driverController, T_Button.BACK);
+	T_Toggle driverTestToggle = new T_Toggle(driverController, T_Button.BACK, false);
 	
 	public boolean getDriverRumbleStart() {
 		return driverController.getButton(T_Button.RIGHT_BUMPER);
@@ -67,7 +67,7 @@ public class OI {
 	}
 	
 	public double getTurn() {
-		return driverController.getAxis(T_Stick.LEFT, T_Axis.Y);
+		return driverController.getAxis(T_Stick.LEFT, T_Axis.X);
 	}
 
 	public boolean isDriverAction() {
