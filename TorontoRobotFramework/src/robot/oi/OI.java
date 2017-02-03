@@ -36,16 +36,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * RBumper: 	Rumble (test) the Driver Controller
  * Start:		
  * Back:		Toggle (test)
+ * LStickPush   Toggle Motor Pids
  * 
- * POV:       	Go Straight Using Gyro Command
+ * POV:       	RotateToAngle
  *
  */
 public class OI {
 	
-	T_OiController driverController = new T_Logitech_GameController(0);
-	//T_OiController driverController = new T_Logitech_Joystick(0);
+	public AutoSelector autoSelector = new AutoSelector();
+
+	private T_OiController driverController = new T_Logitech_GameController(0);
 	
-	T_Toggle driverTestToggle = new T_Toggle(driverController, T_Button.BACK);
+	private T_Toggle driverTestToggle = new T_Toggle(driverController, T_Button.BACK, false);
+	
+	private T_Toggle motorPidToggle = new T_Toggle(driverController, T_Button.LEFT_STICK, true);
 	
 	public boolean getDriverRumbleStart() {
 		return driverController.getButton(T_Button.RIGHT_BUMPER);
@@ -63,8 +67,12 @@ public class OI {
 		return driverTestToggle.getValue();
 	}
 	
-	public boolean getStartDriveStraightWithGyroCommand() {
-		return driverController.getPov() == 0;
+	public boolean getMotorPidEnabled() {
+		return motorPidToggle.getValue();
+	}
+	
+	public int getRotateToAngle() {
+		return driverController.getPov();
 	}
 	
 	public double getTurn() {
@@ -79,14 +87,27 @@ public class OI {
 		driverController.setRumble(rumble);
 	}
 
-	public void teleopPeriodic() {
-		driverTestToggle.update();
+	public boolean getCancel() {
+		return driverController.getButton(T_Button.BACK);
 	}
 	
-	public void updateSmartDashboard() {
+	public boolean getCalibrate() {
+		return driverController.getButton(T_Button.START);
+	}
+	
+	public void updatePeriodic() {
+		
+		// Update all toggles
+		driverTestToggle.update();
+		motorPidToggle.update();
+		
+		// Update all smartdashboard values
+		autoSelector.updateSmartDashboard();
+		
 		SmartDashboard.putString("Driver Controller", 
 				driverController.toString());
 		SmartDashboard.putBoolean("Toggle", getDriverToggle());
+		SmartDashboard.putBoolean("MotorPidToggle", getMotorPidEnabled());
 	}
 }
 

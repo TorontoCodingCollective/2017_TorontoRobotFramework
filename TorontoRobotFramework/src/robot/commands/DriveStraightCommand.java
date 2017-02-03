@@ -30,7 +30,7 @@ public class DriveStraightCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.chassisSubsystem.setBothMotorSpeeds(speed);
+//    	Robot.chassisSubsystem.setBothMotorSpeeds(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -42,12 +42,12 @@ public class DriveStraightCommand extends Command {
     	// Look for Joystick movement - and then end
     	if (Robot.oi.isDriverAction()) { return true; }
     	
-    	return Math.abs(Robot.chassisSubsystem.getEncoderDistance()) >= encoderDistance;
+    	return Math.abs(Robot.chassisSubsystem.getEncoderDistanceInches()) >= encoderDistance;
     }
 
 	@Override
 	protected void end() {
-		Robot.chassisSubsystem.setBothMotorSpeeds(0);
+//		Robot.chassisSubsystem.setBothMotorSpeeds(0);
 	}
 
 	@Override
