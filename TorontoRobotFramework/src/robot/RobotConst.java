@@ -17,13 +17,14 @@ public class RobotConst {
 	 * drive encoders with an unloaded robot (robot on blocks).  This represents the 
 	 * theoretical maximum speed of the robot.
 	 */
-    public static final double MAX_DRIVE_SPEED = 1800;
+    public static final double MAX_DRIVE_ENCODER_SPEED = 1800;
     
     /** The measured encoder counts per foot */
     public static final double DRIVE_ENCODER_COUNTS_PER_FT = 300.0;
     
     /** Gyro PID proportional gain */
     public static final double GYRO_PROPORTIONAL_GAIN = 6.0;
+    /** Gyro PID integral gain */
     public static final double GYRO_INTEGRAL_GAIN = .1;
     
     /** Gyro in-place pivot speed used when under gyro control */
@@ -31,6 +32,8 @@ public class RobotConst {
     
     /** Drive PID proportional gain */
     public static final double DRIVE_PID_PROPORTIONAL_GAIN = 1.0;
+    /** Drive PID integral gain */
+    public static final double DRIVE_PID_INTEGRAL_GAIN = 0.0;
     
     /** Gyro Sensitivity for calibration of the rotational rate of the gyro */
     public static final double GYRO_SENSITIVITY = .00172;

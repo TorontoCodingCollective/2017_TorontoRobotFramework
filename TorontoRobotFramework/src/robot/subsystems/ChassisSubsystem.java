@@ -2,6 +2,7 @@
 package robot.subsystems;
 
 import com.toronto.pid.T_GyroPidController;
+import com.toronto.pid.T_MotorSpeedPidController;
 import com.toronto.sensors.T_Gyro;
 import com.toronto.subsystems.T_Subsystem;
 
@@ -33,8 +34,17 @@ public class ChassisSubsystem extends T_Subsystem {
 	T_GyroPidController gyroPidController = 
 			new T_GyroPidController(RobotConst.GYRO_PROPORTIONAL_GAIN, RobotConst.GYRO_INTEGRAL_GAIN, gyro);
 
+	T_MotorSpeedPidController leftMotorSpeedController = 
+			new T_MotorSpeedPidController(RobotConst.DRIVE_PID_PROPORTIONAL_GAIN, RobotConst.DRIVE_PID_INTEGRAL_GAIN, 
+					leftEncoder, RobotConst.MAX_DRIVE_ENCODER_SPEED);
+
+	T_MotorSpeedPidController rightMotorSpeedController = 
+			new T_MotorSpeedPidController(RobotConst.DRIVE_PID_PROPORTIONAL_GAIN, RobotConst.DRIVE_PID_INTEGRAL_GAIN, 
+					rightEncoder, RobotConst.MAX_DRIVE_ENCODER_SPEED);
+
 	private AnalogInput ultrasonicSensor = new AnalogInput(3);
 
+	private boolean drivePidsEnabled = false;
 	/* ****************************************************************************
 	 * Put methods for controlling this subsystem here.
 	 * Call these from Commands.
@@ -44,22 +54,38 @@ public class ChassisSubsystem extends T_Subsystem {
 		setDefaultCommand(new JoystickCommand());
 	}
 
-	public void setBothMotorSpeeds(double speed) {
-		leftMotor .set(calcPIDValue(speed, leftEncoder.getRate()));
-		rightMotor.set(calcPIDValue(speed, rightEncoder.getRate()));
+	public void enableDrivePids() {
+		if (! leftMotorSpeedController.isEnabled()) {
+			leftMotorSpeedController.enable();
+		}
+		if (! rightMotorSpeedController.isEnabled()) {
+			rightMotorSpeedController.enable();
+		}
+		drivePidsEnabled = true;
+	}
+	
+	public void disableDrivePids() {
+		if (leftMotorSpeedController.isEnabled()) {
+			leftMotorSpeedController.disable();
+		}
+		if (rightMotorSpeedController.isEnabled()) {
+			rightMotorSpeedController.disable();
+		}
+		drivePidsEnabled = false;
 	}
 
 	public void setMotorSpeeds(double leftSpeed, double rightSpeed) {
-		//    	leftMotor.set(leftSpeed);
-		//    	rightMotor.set(rightSpeed);
-		leftMotor .set(calcPIDValue(leftSpeed, leftEncoder.getRate()));
-		rightMotor.set(calcPIDValue(rightSpeed, rightEncoder.getRate()));
-	}
-
-	public void setMotorSpeed(double forwardSpeed, double turnSpeed) {
-		if (Math.abs(forwardSpeed) <= 0.03) {
-			leftMotor.set(turnSpeed);
-			rightMotor.set(-turnSpeed);
+		
+		if (drivePidsEnabled) {
+			leftMotorSpeedController .setSetpoint(leftSpeed);
+			rightMotorSpeedController.setSetpoint(rightSpeed);
+			
+			leftMotor .set(leftMotorSpeedController .get());
+			rightMotor.set(rightMotorSpeedController.get());
+		}
+		else {
+			leftMotor .set(leftSpeed);
+			rightMotor.set(rightSpeed);
 		}
 	}
 
@@ -69,6 +95,8 @@ public class ChassisSubsystem extends T_Subsystem {
 		gyro.initGyro();
 		gyro.setSensitivity(RobotConst.GYRO_SENSITIVITY);
 		gyroPidController.disable();
+		
+		enableDrivePids();
 	}
 
 	public void resetEncoders() {
@@ -94,7 +122,7 @@ public class ChassisSubsystem extends T_Subsystem {
 	}
 
 	public double getGyroPidOutput() {
-		return gyroPidController.calculatePidOutput();
+		return gyroPidController.get();
 	}
 
 	public void setGyroPidSetpoint(double angle) {
@@ -126,26 +154,13 @@ public class ChassisSubsystem extends T_Subsystem {
 		return (rightEncoder.getDistance() + leftEncoder.getDistance()) / 2;
 	}
 
-	private double calcPIDValue(double setPoint, double feedback) {
-
-		double normalizedFeedback = feedback/RobotConst.MAX_DRIVE_SPEED;
-		if (normalizedFeedback >  1.0) { normalizedFeedback =  1.0; }
-		if (normalizedFeedback < -1.0) { normalizedFeedback = -1.0; }
-
-		double error = setPoint - normalizedFeedback;
-
-		double output = setPoint + error * RobotConst.DRIVE_PID_PROPORTIONAL_GAIN;
-
-		double normalizedOutput = output;
-
-		if (normalizedOutput >  1.0) { normalizedOutput =  1.0; }
-		if (normalizedOutput < -1.0) { normalizedOutput = -1.0; }
-
-		return normalizedOutput;
-	}
-
 	@Override
 	public void updatePeriodic() {
+
+		// Calculate all PIDs (only once per loop)
+		leftMotorSpeedController.calculatePidOutput();
+		rightMotorSpeedController.calculatePidOutput();
+		gyroPidController.calculatePidOutput();
 		
 		// Update all SmartDashboard values
 		SmartDashboard.putData("Left Encoder", leftEncoder);
@@ -157,6 +172,14 @@ public class ChassisSubsystem extends T_Subsystem {
 		SmartDashboard.putNumber("Gyro PID Output", gyroPidController.get());
 		SmartDashboard.putNumber("Raw Ultrasonic Value", ultrasonicSensor.getValue());
 		SmartDashboard.putData("Gyro PID", gyroPidController);
+		SmartDashboard.putNumber("Left Motor Setpoint", leftMotorSpeedController.getSetpoint());
+		SmartDashboard.putNumber("Right Motor Setpoint", rightMotorSpeedController.getSetpoint());
+		SmartDashboard.putNumber("Left Motor Output", leftMotorSpeedController.get());
+		SmartDashboard.putNumber("Right Motor Output", rightMotorSpeedController.get());
+		SmartDashboard.putNumber("Left Motor Error", leftMotorSpeedController.getError());
+		SmartDashboard.putNumber("Right Motor Error", rightMotorSpeedController.getError());
+		SmartDashboard.putData("Left Motor PID", leftMotorSpeedController);
+		SmartDashboard.putData("Right Motor PID", rightMotorSpeedController);
 	}
 }
 

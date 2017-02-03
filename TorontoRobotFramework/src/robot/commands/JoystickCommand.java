@@ -75,16 +75,61 @@ public class JoystickCommand extends Command {
     			calibrateState = ButtonState.RELEASED;
     		}
     	}
-	    	
-    	double speed = Robot.oi.getSpeed();
-    	double turn  = Robot.oi.getTurn();
-    	
-    	if (Math.abs(turn) > 0.05) {
-    		Robot.chassisSubsystem.setMotorSpeed(speed, turn);
+
+    	// Turn on or off the PIDs
+    	if (Robot.oi.getMotorPidEnabled()) {
+    		Robot.chassisSubsystem.enableDrivePids();
     	}
     	else {
-        	Robot.chassisSubsystem.setBothMotorSpeeds(speed);
+    		Robot.chassisSubsystem.disableDrivePids();
     	}
+    	
+    	double speed = Robot.oi.getSpeed();
+    	if (Math.abs(speed) <= .02) { speed = 0; }
+    	
+    	double turn  = Robot.oi.getTurn();
+    	if (Math.abs(turn) <= .02) { turn = 0; }
+    	
+    	double leftSpeed = 0.0;
+    	double rightSpeed = 0.0;
+    	
+    	// If the robot is not moving forward or backwards and there is a
+    	if (speed == 0.0) {
+    		leftSpeed  =  turn;
+    		rightSpeed = -turn;
+    	}
+    	else {
+    		if (speed > 0) {
+				if (turn == 0) {
+					leftSpeed = speed;
+					rightSpeed = speed;
+				}
+				else if (turn < 0) {
+					rightSpeed = speed;
+					leftSpeed  = (1.0 + turn) * speed;
+				}
+				else if (turn > 0) {
+					leftSpeed = speed;
+					rightSpeed  = (1.0 - turn) * speed;
+				}
+    		}
+    		if (speed < 0) {
+				if (turn == 0) {
+					leftSpeed = speed;
+					rightSpeed = speed;
+				}
+				else if (turn < 0) {
+					rightSpeed = (1.0 + turn) * speed;
+					leftSpeed  = speed;
+				}
+				else if (turn > 0) {
+					leftSpeed = (1.0 - turn) * speed;
+					rightSpeed  = speed;
+				}
+    		}
+    	}
+    	
+    	Robot.chassisSubsystem.setMotorSpeeds(leftSpeed, rightSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

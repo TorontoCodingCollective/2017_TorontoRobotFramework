@@ -73,7 +73,7 @@ public class DriveStraightWithGyroCommand extends Command {
 
 	@Override
 	protected void end() {
-		Robot.chassisSubsystem.setBothMotorSpeeds(0);
+//		Robot.chassisSubsystem.setBothMotorSpeeds(0);
 	}
 
 	@Override

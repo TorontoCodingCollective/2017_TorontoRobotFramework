@@ -36,6 +36,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * RBumper: 	Rumble (test) the Driver Controller
  * Start:		
  * Back:		Toggle (test)
+ * LStickPush   Toggle Motor Pids
  * 
  * POV:       	RotateToAngle
  *
@@ -46,7 +47,9 @@ public class OI {
 
 	private T_OiController driverController = new T_Logitech_GameController(0);
 	
-	private T_Toggle driverTestToggle = new T_Toggle(driverController, T_Button.BACK);
+	private T_Toggle driverTestToggle = new T_Toggle(driverController, T_Button.BACK, false);
+	
+	private T_Toggle motorPidToggle = new T_Toggle(driverController, T_Button.LEFT_STICK, true);
 	
 	public boolean getDriverRumbleStart() {
 		return driverController.getButton(T_Button.RIGHT_BUMPER);
@@ -62,6 +65,10 @@ public class OI {
 	
 	public boolean getDriverToggle() {
 		return driverTestToggle.getValue();
+	}
+	
+	public boolean getMotorPidEnabled() {
+		return motorPidToggle.getValue();
 	}
 	
 	public int getRotateToAngle() {
@@ -88,16 +95,19 @@ public class OI {
 		return driverController.getButton(T_Button.START);
 	}
 	
-	public void teleopPeriodic() {
-		driverTestToggle.update();
-	}
-	
 	public void updatePeriodic() {
 		
+		// Update all toggles
+		driverTestToggle.update();
+		motorPidToggle.update();
+		
+		// Update all smartdashboard values
 		autoSelector.updateSmartDashboard();
+		
 		SmartDashboard.putString("Driver Controller", 
 				driverController.toString());
 		SmartDashboard.putBoolean("Toggle", getDriverToggle());
+		SmartDashboard.putBoolean("MotorPidToggle", getMotorPidEnabled());
 	}
 }
 
