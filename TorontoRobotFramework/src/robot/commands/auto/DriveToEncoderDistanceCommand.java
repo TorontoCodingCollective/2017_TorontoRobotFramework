@@ -12,7 +12,7 @@ public class DriveToEncoderDistanceCommand extends DriveOnHeadingCommand {
 	
     public DriveToEncoderDistanceCommand(double heading, double speed, double encoderDistanceInches) {
     	super(heading, speed);
-    	this.encoderDistanceInches = encoderDistanceInches;
+    	this.encoderDistanceInches = encoderDistanceInches - 2.0;  // allow 2 inches overshoot for stopping.
     }
 
     @Override

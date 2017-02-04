@@ -20,6 +20,16 @@ public class AutonomousCommand extends CommandGroup {
     	System.out.println("Robot Position " + robotPosition);
     	System.out.println("Boiler Position " + boilerPosition);
     	System.out.println("Shoot Mode " + shootMode);
+    	
+    	
+    	if (robotPosition == RobotPosition.CENTER) {
+    		addSequential(new DriveToEncoderDistanceCommand(0, .6, 75.0));
+    	}
+    	if (robotPosition == RobotPosition.LEFT) {
+    		addSequential(new DriveToEncoderDistanceCommand(0, .6, 73.0));
+    		addSequential(new RotateToHeadingCommand(55));
+    		addSequential(new DriveToEncoderDistanceCommand(55, .6, 36.0));
+    	}
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

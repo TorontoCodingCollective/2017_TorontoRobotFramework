@@ -33,7 +33,7 @@ public class JoystickCommand extends Command {
     	switch (driveStraightState) {
     	case RELEASED:
 	    	if (Robot.oi.getStartDriveStraightCommand()) {
-	    		Scheduler.getInstance().add(new DriveToEncoderDistanceCommand(0, .6, 120));
+	    		Scheduler.getInstance().add(new DriveToEncoderDistanceCommand(0, .6, 50.0));
 	    		driveStraightState = ButtonState.PRESSED;
 	    		return;
 	    	}
