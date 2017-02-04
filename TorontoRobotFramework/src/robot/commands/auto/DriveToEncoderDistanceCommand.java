@@ -1,9 +1,7 @@
 
 package robot.commands.auto;
 
-import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
-import robot.RobotConst;
 
 /**
  *
