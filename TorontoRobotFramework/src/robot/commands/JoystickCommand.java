@@ -4,6 +4,7 @@ package robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import robot.Robot;
+import robot.commands.auto.DriveToEncoderDistanceCommand;
 import robot.commands.auto.RotateToHeadingCommand;
 
 /**
@@ -32,7 +33,7 @@ public class JoystickCommand extends Command {
     	switch (driveStraightState) {
     	case RELEASED:
 	    	if (Robot.oi.getStartDriveStraightCommand()) {
-	    		Scheduler.getInstance().add(new DriveStraightCommand(3, .5, 5));
+	    		Scheduler.getInstance().add(new DriveToEncoderDistanceCommand(0, .6, 120));
 	    		driveStraightState = ButtonState.PRESSED;
 	    		return;
 	    	}
@@ -66,6 +67,7 @@ public class JoystickCommand extends Command {
     	switch (calibrateState) {
     	case RELEASED:
 	    	if (Robot.oi.getCalibrate()) {
+	    		Robot.chassisSubsystem.resetEncoders();
 	    		Robot.chassisSubsystem.calibrateGyro();
 	    		calibrateState = ButtonState.PRESSED;
 	    	}
