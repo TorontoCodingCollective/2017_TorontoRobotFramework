@@ -137,6 +137,5 @@ public class RotateToHeadingCommand extends Command {
     		return true;
     	}
     	return Robot.oi.getCancel();
-    	
     }
 }

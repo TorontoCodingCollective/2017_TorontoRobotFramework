@@ -5,6 +5,7 @@ package robot;
  */
 public class RobotConst {
 
+	
 	/** WpiLib compatible inverted indicator {@code boolean true} which can be 
 	 * used to make the robot code more readable */
 	public static final boolean INVERTED     = true;
