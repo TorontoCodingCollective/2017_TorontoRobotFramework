@@ -151,7 +151,7 @@ public class ChassisSubsystem extends T_Subsystem {
 	}
 
 	public double getEncoderDistanceInches() {
-		return (rightEncoder.getDistance() + leftEncoder.getDistance()) / 2;
+		return (rightEncoder.getDistance() + leftEncoder.getDistance()) / (RobotConst.DRIVE_ENCODER_COUNTS_PER_IN * 2);
 	}
 
 	@Override

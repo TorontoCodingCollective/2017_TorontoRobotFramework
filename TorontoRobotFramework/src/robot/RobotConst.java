@@ -19,8 +19,8 @@ public class RobotConst {
 	 */
     public static final double MAX_DRIVE_ENCODER_SPEED = 1800;
     
-    /** The measured encoder counts per foot */
-    public static final double DRIVE_ENCODER_COUNTS_PER_FT = 300.0;
+    /** The measured encoder counts per in */
+    public static final double DRIVE_ENCODER_COUNTS_PER_IN = 300.0/12;
     
     /** Gyro PID proportional gain */
     public static final double GYRO_PROPORTIONAL_GAIN = 6.0;
