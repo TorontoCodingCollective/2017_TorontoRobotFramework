@@ -18,6 +18,10 @@ public class RotateToHeadingCommand extends Command {
 	
 	protected double heading;
 	
+	private double angleError;
+	
+	private double angleRate;
+	
 	private Step step = Step.COARSE;
 	
 	/**
@@ -57,7 +61,9 @@ public class RotateToHeadingCommand extends Command {
     	double leftSpeed  = 0d;
     	double rightSpeed = 0d;
     	
-    	double angleError = Robot.chassisSubsystem.getAngleError(heading);
+    	angleError = Robot.chassisSubsystem.getAngleError(heading);
+    	
+    	angleRate = Robot.chassisSubsystem.getAngleRate();
     	
     	SmartDashboard.putNumber("heading", heading);
     	SmartDashboard.putNumber("angleError", angleError);
@@ -127,6 +133,10 @@ public class RotateToHeadingCommand extends Command {
     
     @Override
     public boolean isFinished() {
+    	if(Math.abs(angleRate)<3 && Math.abs(angleError)<1.5){
+    		return true;
+    	}
     	return Robot.oi.getCancel();
+    	
     }
 }
