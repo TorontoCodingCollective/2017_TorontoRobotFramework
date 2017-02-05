@@ -45,7 +45,7 @@ public abstract class DriveOnHeadingCommand extends Command {
     	
     	double angleError = Robot.chassisSubsystem.getAngleError(heading);
     	
-    	if (Math.abs(angleError) < 25.0d) { 
+    	if (Math.abs(angleError) < 30.0d) { 
     		step = Step.FINE;
     		enableGyroPid();
     	}
@@ -74,7 +74,7 @@ public abstract class DriveOnHeadingCommand extends Command {
     		// Turn off the pid control for the gyro.
     		Robot.chassisSubsystem.disableGyroPid();
     		
-        	if (Math.abs(angleError) < 25.0d) { 
+        	if (Math.abs(angleError) < 30.0d) { 
         		step = Step.FINE;
         		enableGyroPid();
         		break;
@@ -84,14 +84,14 @@ public abstract class DriveOnHeadingCommand extends Command {
         	if (angleError < 0d) {
         		
         		// If the angle error is negative, then turn clockwise to close the error
-        		leftSpeed  =   RobotConst.GYRO_PIVOT_SPEED;
-        		rightSpeed = - RobotConst.GYRO_PIVOT_SPEED;
+        		leftSpeed  =   RobotConst.GYRO_PIVOT_MAX_SPEED;
+        		rightSpeed = - RobotConst.GYRO_PIVOT_MAX_SPEED;
         		
         	} else {
         		
         		// If the angle error is negative, then turn clockwise to close the error
-        		leftSpeed  = - RobotConst.GYRO_PIVOT_SPEED;
-        		rightSpeed =   RobotConst.GYRO_PIVOT_SPEED;
+        		leftSpeed  = - RobotConst.GYRO_PIVOT_MAX_SPEED;
+        		rightSpeed =   RobotConst.GYRO_PIVOT_MAX_SPEED;
 
         	}
         	break;
@@ -109,15 +109,17 @@ public abstract class DriveOnHeadingCommand extends Command {
     		// FIXME:
     		// Slow down one motor based on the error.
 			if (gyroPidOutput > 0) {
-				
-	    		rightSpeed -= gyroPidOutput * RobotConst.GYRO_PROPORTIONAL_GAIN * setSpeed;
+
+	    		rightSpeed -= gyroPidOutput;
+	    		
 	    		if (rightSpeed < -setSpeed) {
 	    			 rightSpeed = -setSpeed;
 	    		}
 	    		
 	    	}
 	    	else {
-	    		leftSpeed -=  -angleError * RobotConst.GYRO_PROPORTIONAL_GAIN * setSpeed;
+	    		leftSpeed +=  gyroPidOutput;
+
 	    		if (leftSpeed < -setSpeed) {
 	    			leftSpeed = -setSpeed;
 	    		}
@@ -130,6 +132,11 @@ public abstract class DriveOnHeadingCommand extends Command {
     }
 
     
+    @Override
+    protected void end() {
+    	Robot.chassisSubsystem.disableGyroPid();
+    } 
+    
     private void enableGyroPid() {
     	
 		// Enable the Gyro PID
@@ -137,4 +144,6 @@ public abstract class DriveOnHeadingCommand extends Command {
 		Robot.chassisSubsystem.setGyroPidSetpoint(heading);
 		
     }
+    
+    
 }

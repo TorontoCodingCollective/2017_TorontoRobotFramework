@@ -18,6 +18,10 @@ public class RotateToHeadingCommand extends Command {
 	
 	protected double heading;
 	
+	private double angleError;
+	
+	private double angleRate;
+	
 	private Step step = Step.COARSE;
 	
 	/**
@@ -57,7 +61,9 @@ public class RotateToHeadingCommand extends Command {
     	double leftSpeed  = 0d;
     	double rightSpeed = 0d;
     	
-    	double angleError = Robot.chassisSubsystem.getAngleError(heading);
+    	angleError = Robot.chassisSubsystem.getAngleError(heading);
+    	
+    	angleRate = Robot.chassisSubsystem.getAngleRate();
     	
     	SmartDashboard.putNumber("heading", heading);
     	SmartDashboard.putNumber("angleError", angleError);
@@ -79,14 +85,14 @@ public class RotateToHeadingCommand extends Command {
         	if (angleError > 0d) {
         		
         		// If the angle error is positive, then turn clockwise to close the error
-        		leftSpeed  =   RobotConst.GYRO_PIVOT_SPEED;
-        		rightSpeed = - RobotConst.GYRO_PIVOT_SPEED;
+        		leftSpeed  =   RobotConst.GYRO_PIVOT_MAX_SPEED;
+        		rightSpeed = - RobotConst.GYRO_PIVOT_MAX_SPEED;
         		
         	} else {
         		
         		// If the angle error is negative, then turn counter clockwise to close the error
-        		leftSpeed  = - RobotConst.GYRO_PIVOT_SPEED;
-        		rightSpeed =   RobotConst.GYRO_PIVOT_SPEED;
+        		leftSpeed  = - RobotConst.GYRO_PIVOT_MAX_SPEED;
+        		rightSpeed =   RobotConst.GYRO_PIVOT_MAX_SPEED;
 
         	}
 
@@ -104,14 +110,15 @@ public class RotateToHeadingCommand extends Command {
     		
     		// Limit the PID output to the pivot speed so that the robot does 
     		// not speed up past the max pivot speed when turning.
-    		if (Math.abs(gyroPidOutput) > RobotConst.GYRO_PIVOT_SPEED) {
-    			gyroPidOutput = Math.signum(gyroPidOutput) * RobotConst.GYRO_PIVOT_SPEED;
+    		if (Math.abs(gyroPidOutput) > RobotConst.GYRO_PIVOT_MAX_SPEED) {
+    			gyroPidOutput = Math.signum(gyroPidOutput) * RobotConst.GYRO_PIVOT_MAX_SPEED;
     		}
     		
     		leftSpeed  =  gyroPidOutput;
     		rightSpeed = -gyroPidOutput;
     		
     	}
+    	
     	
     	Robot.chassisSubsystem.setMotorSpeeds(leftSpeed, rightSpeed);
     }
@@ -127,6 +134,9 @@ public class RotateToHeadingCommand extends Command {
     
     @Override
     public boolean isFinished() {
+    	if(Math.abs(angleRate)<3 && Math.abs(angleError)<1.5){
+    		return true;
+    	}
     	return Robot.oi.getCancel();
     }
 }

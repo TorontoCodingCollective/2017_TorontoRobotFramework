@@ -21,4 +21,9 @@ public class RobotMap {
     // Analog Input Ports
     public static final int GYRO_ANALOG_INPUT_PORT = 0;
     
+    // Can bus Addresses
+    public static final int POWER_DISTRIBUTION_CAN_ADDRESS = 0;
+    public static final int LEFT_MOTOR_CAN_ADDRESS  = 1;
+    public static final int RIGHT_MOTOR_CAN_ADDRESS = 2;
+    
 }
