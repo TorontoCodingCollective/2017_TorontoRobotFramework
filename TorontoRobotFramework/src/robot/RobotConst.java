@@ -21,12 +21,12 @@ public class RobotConst {
     public static final double MAX_DRIVE_ENCODER_SPEED = 1800;
     
     /** The measured encoder counts per in */
-    public static final double DRIVE_ENCODER_COUNTS_PER_IN = 300.0/12;
+    public static final double DRIVE_ENCODER_COUNTS_PER_IN = 3570/200;
     
     /** Gyro PID proportional gain */
-    public static final double GYRO_PROPORTIONAL_GAIN = 5.0;
+    public static final double GYRO_PROPORTIONAL_GAIN = 2.0;
     /** Gyro PID integral gain */
-    public static final double GYRO_INTEGRAL_GAIN = .2;
+    public static final double GYRO_INTEGRAL_GAIN = .05;
     
     /** Gyro in-place pivot speed used when under gyro control */
     public static final double GYRO_PIVOT_SPEED = .65; 
