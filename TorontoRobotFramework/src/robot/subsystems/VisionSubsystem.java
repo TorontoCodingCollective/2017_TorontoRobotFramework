@@ -1,18 +1,29 @@
 package robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import com.toronto.subsystems.T_Subsystem;
+
+import edu.wpi.first.wpilibj.CameraServer;
 
 /**
  *
  */
-public class VisionSubsystem extends Subsystem {
-
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+public class VisionSubsystem extends T_Subsystem {
 
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+    	// there is no default command for the vision subsystem
     }
+
+	@Override
+	public void robotInit() {
+		/** 
+		 * Automatically start a camera to send to the SmartDashboard 
+		 */
+		CameraServer.getInstance().startAutomaticCapture("USBCam0", 0);
+	}
+
+	@Override
+	public void updatePeriodic() {
+		// There is no periodic update for the vision server.
+	}
 }
 
