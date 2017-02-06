@@ -72,12 +72,12 @@ public class RobotConst {
     	// Robot 1321 has larger 6" wheels
     	if (ROBOT == 1321) {
     	    
-    		DRIVE_ENCODER_MAX_SPEED = 1800;
+    		DRIVE_ENCODER_MAX_SPEED = 900;
     	    DRIVE_ENCODER_COUNTS_PER_IN = 3570.0d/200.0d;
     	    
-    	    GYRO_PID_PROPORTIONAL_GAIN = 6.0;
-    	    GYRO_PID_INTEGRAL_GAIN = .1;
-    	    GYRO_PIVOT_MAX_SPEED = .7; 
+    	    GYRO_PID_PROPORTIONAL_GAIN = 3.0;
+    	    GYRO_PID_INTEGRAL_GAIN = .15;
+    	    GYRO_PIVOT_MAX_SPEED = .35; 
     	    
     	    DRIVE_PID_PROPORTIONAL_GAIN = 1.0;
     	    DRIVE_PID_INTEGRAL_GAIN = 0.0;

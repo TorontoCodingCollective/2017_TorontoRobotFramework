@@ -14,6 +14,7 @@ public class T_SrxEncoder extends T_Encoder {
 	public T_SrxEncoder(CANTalon canTalon, boolean inverted) {
 		super(inverted);
 		this.canTalon = canTalon;
+		reset();
 	}
 	
 	@Override
