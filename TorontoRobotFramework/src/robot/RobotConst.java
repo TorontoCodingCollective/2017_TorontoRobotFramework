@@ -1,4 +1,5 @@
 package robot;
+
 /**
  * The RobotConst is a set of Robot constants that are determined by measuring
  * the ouput of the robot.
@@ -50,7 +51,7 @@ public class RobotConst {
     	// SET THE ROBOT NUMBER HERE
     	//****************************
     	
-    	ROBOT = 1320;
+    	ROBOT = 1321;
     	
     	// Robot 1320 has smaller 3" wheels
     	if (ROBOT == 1320) {
@@ -73,7 +74,7 @@ public class RobotConst {
     	if (ROBOT == 1321) {
     	    
     		DRIVE_ENCODER_MAX_SPEED = 900;
-    	    DRIVE_ENCODER_COUNTS_PER_IN = 3570.0d/200.0d;
+    	    DRIVE_ENCODER_COUNTS_PER_IN = 75.43;
     	    
     	    GYRO_PID_PROPORTIONAL_GAIN = 3.0;
     	    GYRO_PID_INTEGRAL_GAIN = .15;
@@ -82,7 +83,7 @@ public class RobotConst {
     	    DRIVE_PID_PROPORTIONAL_GAIN = 1.0;
     	    DRIVE_PID_INTEGRAL_GAIN = 0.0;
     	    
-    	    GYRO_SENSITIVITY = .00172;
+    	    GYRO_SENSITIVITY = .00161;
     	    
     	}
     }

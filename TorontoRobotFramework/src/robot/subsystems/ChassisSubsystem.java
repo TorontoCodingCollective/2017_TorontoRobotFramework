@@ -206,6 +206,7 @@ public class ChassisSubsystem extends T_Subsystem {
 		SmartDashboard.putNumber("Left Encoder Speed",     leftEncoder.getRate());
 		SmartDashboard.putNumber("Right Encoder Distance", rightEncoder.get());
 		SmartDashboard.putNumber("Right Encoder Speed",    rightEncoder.getRate());
+		SmartDashboard.putNumber("Robot Distance", getEncoderDistanceInches());
 
 		SmartDashboard.putData("Left Motor PID", leftMotorPidController);
 		SmartDashboard.putData("Right Motor PID", rightMotorPidController);
