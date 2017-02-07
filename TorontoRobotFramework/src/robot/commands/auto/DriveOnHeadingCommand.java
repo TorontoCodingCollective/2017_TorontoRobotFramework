@@ -81,17 +81,17 @@ public abstract class DriveOnHeadingCommand extends Command {
         	}
 
         	// Pivot based on the error direction
-        	if (angleError < 0d) {
+        	if (angleError > 0d) {
         		
         		// If the angle error is negative, then turn clockwise to close the error
-        		leftSpeed  =   RobotConst.GYRO_PIVOT_SPEED;
-        		rightSpeed = - RobotConst.GYRO_PIVOT_SPEED;
+        		leftSpeed  =   RobotConst.GYRO_PIVOT_MAX_SPEED;
+        		rightSpeed = - RobotConst.GYRO_PIVOT_MAX_SPEED;
         		
         	} else {
         		
         		// If the angle error is negative, then turn clockwise to close the error
-        		leftSpeed  = - RobotConst.GYRO_PIVOT_SPEED;
-        		rightSpeed =   RobotConst.GYRO_PIVOT_SPEED;
+        		leftSpeed  = - RobotConst.GYRO_PIVOT_MAX_SPEED;
+        		rightSpeed =   RobotConst.GYRO_PIVOT_MAX_SPEED;
 
         	}
         	break;
