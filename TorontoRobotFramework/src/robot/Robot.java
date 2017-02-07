@@ -42,6 +42,7 @@ public class Robot extends IterativeRobot {
     	for (T_Subsystem subsystem: subsystemLs) {
     		subsystem.robotInit();
     	}
+    	SmartDashboard.putString("Robot Number", String.valueOf(RobotConst.ROBOT));
     	SmartDashboard.putData("Scheduler", Scheduler.getInstance());
     }
 	
