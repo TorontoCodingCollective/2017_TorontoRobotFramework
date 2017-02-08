@@ -7,39 +7,39 @@ public class T_SrxEncoder extends T_Encoder {
 
 	private final CANTalon canTalon;
 	
+	private int offset;
+
 	public T_SrxEncoder(CANTalon canTalon) {
 		this(canTalon, false);
 	}
-	
+
 	public T_SrxEncoder(CANTalon canTalon, boolean inverted) {
 		super(inverted);
 		this.canTalon = canTalon;
 		reset();
 	}
-	
+
+	/**
+	 * Subtract the encoder position with the offset and return the position as negative if it's inverted and positive if not
+	 */
 	@Override
 	public int get() {
-		if (super.inverted) {
-			return -canTalon.getEncPosition();
-		}
-		else {
-			return canTalon.getEncPosition();
-		}
+		int position = canTalon.getEncPosition() - this.offset;
+		return super.inverted ? -position : position;
 	}
 
 	@Override
 	public double getRate() {
-		if (super.inverted) {
-			return -canTalon.getEncVelocity();
-		}
-		else {
-			return canTalon.getEncVelocity();
-		}
+		return super.inverted ? -canTalon.getEncVelocity() : canTalon.getEncVelocity();
 	}
 
+	/**
+	 * Subtract the encoder position from the offset because the
+	 * setEncPosition() does not work.
+	 */
 	@Override
 	public void reset() {
-		canTalon.setEncPosition(0);
+		this.offset = canTalon.getEncPosition();
 	}
 
 }

@@ -192,6 +192,8 @@ public class ChassisSubsystem extends T_Subsystem {
 	public double getEncoderDistanceInches() {
 		return (rightEncoder.get() + leftEncoder.get()) / (RobotConst.DRIVE_ENCODER_COUNTS_PER_IN * 2);
 	}
+	
+	
 
 	@Override
 	public void updatePeriodic() {
