@@ -26,14 +26,14 @@ public class AutonomousCommand extends CommandGroup {
     		addSequential(new DriveToEncoderDistanceCommand(0, .6, 73.0));
     	}
     	if (robotPosition == RobotPosition.LEFT) {
-    		addSequential(new DriveToEncoderDistanceCommand(0, .6, 86.5));
-    		addSequential(new RotateToHeadingCommand(58));
-    		addSequential(new DriveToEncoderDistanceCommand(58, .5, 32.0));
+    		addSequential(new DriveToEncoderDistanceCommand(0, .6, 87.5));
+    		addSequential(new RotateToHeadingCommand(60));
+    		addSequential(new DriveToEncoderDistanceCommand(60, .4, 32.0));
     	}
     	if (robotPosition == robotPosition.RIGHT) {
     		addSequential(new DriveToEncoderDistanceCommand(0, .6, 86.5));
     		addSequential(new RotateToHeadingCommand(302));
-    		addSequential(new DriveToEncoderDistanceCommand(302, .4, 32.0));
+    		addSequential(new DriveToEncoderDistanceCommand(302, .3, 32.0));
     	}
     
         // Add Commands here:

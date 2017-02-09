@@ -1,6 +1,8 @@
 
 package robot.commands.auto;
 
+import java.util.IllegalFormatCodePointException;
+
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
 import robot.RobotConst;
@@ -17,6 +19,7 @@ public abstract class DriveOnHeadingCommand extends Command {
 	
 	protected double heading;
 	protected double setSpeed;
+	protected double rampPercent; //Ramp setSpeed up to 100%
 	
 	private Step step = Step.COARSE;
 	
@@ -42,6 +45,8 @@ public abstract class DriveOnHeadingCommand extends Command {
     	// Coarse adjustment is used if the error is > 30 degrees.  This will
     	// cause the robot to pivot before continuing on the selected direction.
     	step = Step.COARSE;
+    	
+    	rampPercent = 0;
     	
     	double angleError = Robot.chassisSubsystem.getAngleError(heading);
     	
@@ -103,8 +108,10 @@ public abstract class DriveOnHeadingCommand extends Command {
     		// alignment.
     		double gyroPidOutput = Robot.chassisSubsystem.getGyroPidOutput();
     		
-    		leftSpeed  = setSpeed;
-    		rightSpeed = setSpeed;
+    		if(rampPercent<=1.0) rampPercent+=0.04;
+    		
+    		leftSpeed  = setSpeed * rampPercent;
+    		rightSpeed = setSpeed * rampPercent;
     		
     		// FIXME:
     		// Slow down one motor based on the error.
