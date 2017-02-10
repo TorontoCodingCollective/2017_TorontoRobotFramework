@@ -24,7 +24,7 @@ public class T_SrxEncoder extends T_Encoder {
 	 */
 	@Override
 	public int get() {
-		int position = canTalon.getEncPosition() - this.offset;
+		int position = (int)canTalon.getPosition() - this.offset;
 		return super.inverted ? -position : position;
 	}
 
@@ -39,7 +39,7 @@ public class T_SrxEncoder extends T_Encoder {
 	 */
 	@Override
 	public void reset() {
-		this.offset = canTalon.getEncPosition();
+		this.offset = (int)canTalon.getPosition();
 	}
 
 }
