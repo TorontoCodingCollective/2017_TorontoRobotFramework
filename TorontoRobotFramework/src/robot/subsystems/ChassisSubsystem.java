@@ -10,6 +10,7 @@ import com.toronto.sensors.T_Gyro;
 import com.toronto.subsystems.T_Subsystem;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,6 +42,8 @@ public class ChassisSubsystem extends T_Subsystem {
 	private boolean drivePidsEnabled = false;
 
 	public AnalogInput ultrasonicSensor = new AnalogInput(1);
+	
+	public DigitalInput towerSensor = new DigitalInput(3);
 
 	public ChassisSubsystem() {
 
@@ -227,6 +230,8 @@ public class ChassisSubsystem extends T_Subsystem {
 		SmartDashboard.putNumber("Gyro PID Output", gyroPidController.get());
 
 		SmartDashboard.putNumber("Raw Ultrasonic Value", ultrasonicSensor.getVoltage());
+		
+		SmartDashboard.putBoolean("Tower Sensor", towerSensor.get());
 
 	}
 }
