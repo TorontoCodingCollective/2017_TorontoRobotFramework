@@ -7,10 +7,11 @@ import com.toronto.pid.T_MotorSpeedPidController;
 import com.toronto.sensors.T_DioEncoder;
 import com.toronto.sensors.T_Encoder;
 import com.toronto.sensors.T_Gyro;
+import com.toronto.sensors.T_LimitSwitch;
+import com.toronto.sensors.T_LimitSwitch.DefaultState;
 import com.toronto.subsystems.T_Subsystem;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -43,7 +44,7 @@ public class ChassisSubsystem extends T_Subsystem {
 
 	public AnalogInput ultrasonicSensor = new AnalogInput(1);
 	
-	public DigitalInput towerSensor = new DigitalInput(3);
+	public T_LimitSwitch towerSensor = new T_LimitSwitch(3, DefaultState.TRUE);
 
 	public ChassisSubsystem() {
 
@@ -95,6 +96,14 @@ public class ChassisSubsystem extends T_Subsystem {
 		setDefaultCommand(new JoystickCommand());
 	}
 
+	public boolean atTower() {
+		return towerSensor.atLimit();
+	}
+	
+	public T_LimitSwitch getTowerSensor() {
+		return towerSensor;
+	}
+	
 	public void enableDrivePids() {
 
 		if (! leftMotorPidController.isEnabled()) {
@@ -231,7 +240,7 @@ public class ChassisSubsystem extends T_Subsystem {
 
 		SmartDashboard.putNumber("Raw Ultrasonic Value", ultrasonicSensor.getVoltage());
 		
-		SmartDashboard.putBoolean("Tower Sensor", towerSensor.get());
+		SmartDashboard.putBoolean("Tower Sensor", towerSensor.atLimit());
 
 	}
 }
