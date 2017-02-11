@@ -25,10 +25,12 @@ public class DriveToEncoderDistanceCommand extends DriveOnHeadingCommand {
 	protected boolean isFinished() {
 		if (this.setSpeed >= 0) {
 			if (Robot.chassisSubsystem.getEncoderDistanceInches() > this.encoderDistanceInches) {
+				Robot.chassisSubsystem.setMotorSpeeds(0, 0);
 				return true;
 			}
 		} else {
 			if (Robot.chassisSubsystem.getEncoderDistanceInches() < this.encoderDistanceInches) {
+				Robot.chassisSubsystem.setMotorSpeeds(0, 0);
 				return true;
 			}
 		}

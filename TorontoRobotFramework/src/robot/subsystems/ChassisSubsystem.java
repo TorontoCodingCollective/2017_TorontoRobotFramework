@@ -104,6 +104,14 @@ public class ChassisSubsystem extends T_Subsystem {
 		return towerSensor;
 	}
 	
+	/**
+	 * Get the speed of both encoders
+	 * @return
+	 */
+	public double getSpeed() {
+		return ((leftEncoder.getRate() + rightEncoder.getRate())) / 2;
+	}
+	
 	public void enableDrivePids() {
 
 		if (! leftMotorPidController.isEnabled()) {

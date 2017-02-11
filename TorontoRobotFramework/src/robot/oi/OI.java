@@ -91,6 +91,10 @@ public class OI {
 		return driverController.getButton(T_Button.BACK);
 	}
 	
+	public boolean getStartGearCommand() {
+		return driverController.getButton(T_Button.B);
+	}
+	
 	public boolean getCalibrate() {
 		return driverController.getButton(T_Button.START);
 	}

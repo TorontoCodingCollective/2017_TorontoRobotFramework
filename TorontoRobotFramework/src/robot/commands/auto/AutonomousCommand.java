@@ -2,6 +2,8 @@ package robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import robot.Robot;
+import robot.commands.GearCommand;
+import robot.commands.GearReleaseCommand;
 import robot.oi.AutoSelector.BoilerPosition;
 import robot.oi.AutoSelector.RobotPosition;
 import robot.oi.AutoSelector.ShootMode;
@@ -25,6 +27,8 @@ public class AutonomousCommand extends CommandGroup {
     	
     	if (robotPosition == RobotPosition.CENTER) {
     		addSequential(new DriveToLimitSwitchCommand(0, .4, Robot.chassisSubsystem.getTowerSensor(), 79));
+    		addSequential(new GearReleaseCommand());
+//    		addSequential(new DriveToEncoderDistanceCommand(0, -.2, 10));
     	}
     	if (robotPosition == RobotPosition.LEFT) {
     		addSequential(new DriveToEncoderDistanceCommand(0, .5, 96));
