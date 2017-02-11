@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.commands.auto.AutonomousCommand;
 import robot.oi.OI;
 import robot.subsystems.ChassisSubsystem;
+import robot.subsystems.GearSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,6 +27,7 @@ public class Robot extends IterativeRobot {
 
 	public static List<T_Subsystem> subsystemLs = new ArrayList<T_Subsystem>();
 	public static final ChassisSubsystem chassisSubsystem = new ChassisSubsystem();
+	public static final GearSubsystem    gearSubsystem    = new GearSubsystem();
 	public static OI oi;
 
 	private Command autoCommand;
@@ -37,6 +39,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	
     	subsystemLs.add(chassisSubsystem);
+    	subsystemLs.add(gearSubsystem);
 		oi = new OI();
 //		oi.robotInit();
     	for (T_Subsystem subsystem: subsystemLs) {
