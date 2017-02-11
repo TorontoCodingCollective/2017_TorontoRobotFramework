@@ -5,6 +5,7 @@ import robot.Robot;
 import robot.oi.AutoSelector.BoilerPosition;
 import robot.oi.AutoSelector.RobotPosition;
 import robot.oi.AutoSelector.ShootMode;
+import robot.subsystems.ChassisSubsystem;
 
 /**
  * This is the auto command that will use the operator input to build the correct command
@@ -23,17 +24,17 @@ public class AutonomousCommand extends CommandGroup {
     	
     	
     	if (robotPosition == RobotPosition.CENTER) {
-    		addSequential(new DriveToEncoderDistanceCommand(0, .6, 77.0));
+    		addSequential(new DriveToLimitSwitchCommand(0, .4, Robot.chassisSubsystem.getTowerSensor(), 79));
     	}
     	if (robotPosition == RobotPosition.LEFT) {
     		addSequential(new DriveToEncoderDistanceCommand(0, .5, 96));
     		addSequential(new RotateToHeadingCommand(60));
-    		addSequential(new DriveToEncoderDistanceCommand(60, .2, 30));
+    		addSequential(new DriveToLimitSwitchCommand(60, .2, Robot.chassisSubsystem.getTowerSensor(), 32));
     	}
     	if (robotPosition == robotPosition.RIGHT) {
-    		addSequential(new DriveToEncoderDistanceCommand(0, .5, 86.5));
-    		addSequential(new RotateToHeadingCommand(302));
-    		addSequential(new DriveToEncoderDistanceCommand(302, .3, 32.0));
+    		addSequential(new DriveToEncoderDistanceCommand(0, .5, 94));
+    		addSequential(new RotateToHeadingCommand(301));
+			addSequential(new DriveToLimitSwitchCommand(301, .2, Robot.chassisSubsystem.getTowerSensor(), 28));
     	}
     
         // Add Commands here:
