@@ -231,6 +231,11 @@ public abstract class DriveOnHeadingCommand extends Command {
 					// adjust counter-clockwise
 					rightSpeed += gyroPidOutput;
 
+					// FIXME:  The rightspeed will not be 
+					// larger than the setpoint because the 
+					// gyroPidOutput is negative
+					// We do not want to let the speed get
+					// less than the negative of the set speed.
 					if (rightSpeed > setSpeed) {
 						rightSpeed = setSpeed;
 					}
@@ -240,6 +245,7 @@ public abstract class DriveOnHeadingCommand extends Command {
 					// adjust clockwise
 					leftSpeed -= gyroPidOutput;
 
+					// FIXME: same comment as above.
 					if (leftSpeed > setSpeed) {
 						leftSpeed = setSpeed;
 					}
