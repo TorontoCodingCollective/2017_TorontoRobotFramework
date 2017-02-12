@@ -44,7 +44,7 @@ public class ChassisSubsystem extends T_Subsystem {
 
 	public AnalogInput ultrasonicSensor = new AnalogInput(1);
 	
-	public T_LimitSwitch towerSensor = new T_LimitSwitch(3, DefaultState.TRUE);
+	public T_LimitSwitch towerSensor = new T_LimitSwitch(RobotMap.FRONT_LIMIT_SWITCH_DIO_PORT, DefaultState.TRUE);
 
 	public ChassisSubsystem() {
 
@@ -223,6 +223,11 @@ public class ChassisSubsystem extends T_Subsystem {
 		rightMotorPidController.calculatePidOutput();
 		gyroPidController.calculatePidOutput();
 
+		if (drivePidsEnabled) {
+			leftMotor .set(leftMotorPidController .get());
+			rightMotor.set(rightMotorPidController.get());
+		}
+		
 		// Update all SmartDashboard values
 		SmartDashboard.putNumber("Left Encoder Distance",  leftEncoder.get());
 		SmartDashboard.putNumber("Left Encoder Speed",     leftEncoder.getRate());

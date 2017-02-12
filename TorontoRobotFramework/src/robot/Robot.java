@@ -48,7 +48,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putString("Robot Number", String.valueOf(RobotConst.ROBOT));
     	SmartDashboard.putData("Scheduler", Scheduler.getInstance());
     }
-	
+
 	/**
      * This function is called once each time the robot enters Disabled mode.
      * You can use it to reset any subsystem information you want to clear when

@@ -16,7 +16,7 @@ public class GearSubsystem extends T_Subsystem {
 	 * 
 	 * Declare all motors and sensors here
 	 ******************************************************************************/
-	private Solenoid release = new Solenoid(0);
+	private Solenoid release = new Solenoid(4);
 
 	public void initDefaultCommand() {
 		setDefaultCommand(new GearCommand());
@@ -31,6 +31,7 @@ public class GearSubsystem extends T_Subsystem {
 	}
 
 	public boolean getCurrentState() {
+//		return true;
 		return release.get();
 	}
 

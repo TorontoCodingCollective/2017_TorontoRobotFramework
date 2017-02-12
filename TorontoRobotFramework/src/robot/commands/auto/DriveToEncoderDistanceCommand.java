@@ -23,16 +23,24 @@ public class DriveToEncoderDistanceCommand extends DriveOnHeadingCommand {
     
 	@Override
 	protected boolean isFinished() {
-		if (this.setSpeed >= 0) {
-			if (Robot.chassisSubsystem.getEncoderDistanceInches() > this.encoderDistanceInches) {
-				Robot.chassisSubsystem.setMotorSpeeds(0, 0);
-				return true;
-			}
-		} else {
-			if (Robot.chassisSubsystem.getEncoderDistanceInches() < this.encoderDistanceInches) {
-				Robot.chassisSubsystem.setMotorSpeeds(0, 0);
-				return true;
-			}
+//		if (this.setSpeed >= 0) {
+//			if (Robot.chassisSubsystem.getEncoderDistanceInches() > this.encoderDistanceInches) {
+//				Robot.chassisSubsystem.setMotorSpeeds(0, 0);
+//				return true;
+//			}
+//		} else {
+//			if (Robot.chassisSubsystem.getEncoderDistanceInches() < this.encoderDistanceInches) {
+//				Robot.chassisSubsystem.setMotorSpeeds(0, 0);
+//				return true;
+//			}
+//		}
+		if(Math.abs(Robot.chassisSubsystem.getEncoderDistanceInches()) > Math.abs(this.encoderDistanceInches)){
+			Robot.chassisSubsystem.setMotorSpeeds(0, 0);
+			System.out.println("Chassis subsystem Encoder distance inches:" + Math.abs(Robot.chassisSubsystem.getEncoderDistanceInches()));
+			System.out.println(" Encoder distance inches:" + Math.abs(this.encoderDistanceInches));
+//			System.out.println("ending drive to encoder");
+			return true;
+			
 		}
 		return false;
 	}

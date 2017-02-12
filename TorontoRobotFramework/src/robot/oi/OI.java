@@ -64,11 +64,11 @@ public class OI {
 	}
 	
 	public boolean getDriverToggle() {
-		return driverTestToggle.getValue();
+		return driverTestToggle.getToggleState();
 	}
 	
 	public boolean getMotorPidEnabled() {
-		return motorPidToggle.getValue();
+		return motorPidToggle.getToggleState();
 	}
 	
 	public int getRotateToAngle() {

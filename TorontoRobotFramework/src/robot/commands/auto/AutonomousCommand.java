@@ -9,10 +9,12 @@ import robot.oi.AutoSelector.RobotPosition;
 import robot.oi.AutoSelector.ShootMode;
 import robot.subsystems.ChassisSubsystem;
 
+
 /**
  * This is the auto command that will use the operator input to build the correct command
  */
 public class AutonomousCommand extends CommandGroup {
+	
 
     public AutonomousCommand() {
     	
@@ -24,22 +26,103 @@ public class AutonomousCommand extends CommandGroup {
     	System.out.println("Boiler Position " + boilerPosition);
     	System.out.println("Shoot Mode " + shootMode);
     	
+    	if (boilerPosition == BoilerPosition.RIGHT) {
+    		
+    		if (robotPosition == RobotPosition.CENTER) {
+				// Do Gear
+           		addSequential(new DriveToLimitSwitchCommand(0, .4, Robot.chassisSubsystem.getTowerSensor(), 79));
+        		addSequential(new GearReleaseCommand());
+        		addSequential(new DriveToEncoderDistanceCommand(0, -.2, 20));
+        		
+        		if (shootMode == ShootMode.GEAR_SHOOT) {
+        			addSequential(new RotateToHeadingCommand(120));
+					addSequential(new DriveToEncoderDistanceCommand(120, .6, 90));
+        		}
+			}
+			if (robotPosition == RobotPosition.LEFT) {
+				
+				// Do Gear
+        		addSequential(new DriveToEncoderDistanceCommand(0, .5, 94));
+        		addSequential(new RotateToHeadingCommand(301));
+    			addSequential(new DriveToLimitSwitchCommand(301, .2, Robot.chassisSubsystem.getTowerSensor(), 28));
+    			addSequential(new GearReleaseCommand());
+    			addSequential(new DriveToEncoderDistanceCommand(301, -.5, 25));
+    			
+    			// Since you won't be able to shoot from the right side, just drive back and straight
+    			if (shootMode == ShootMode.GEAR_ONLY || shootMode == ShootMode.GEAR_SHOOT) {
+        			addSequential(new RotateToHeadingCommand(0));
+        			addSequential(new DriveToEncoderDistanceCommand(0, .5, 30));
+        		}
+			}
+			if (robotPosition == robotPosition.RIGHT) {
+				addSequential(new DriveToEncoderDistanceCommand(0, .5, 94));
+				addSequential(new RotateToHeadingCommand(59));
+				addSequential(new DriveToLimitSwitchCommand(59, .4, Robot.chassisSubsystem.getTowerSensor(), 28));
+				addSequential(new GearReleaseCommand());
+				if(shootMode != ShootMode.GEAR_ONLY){
+					
+				}
+				else{
+					
+				}
+			}
+			
+    	}
     	
-    	if (robotPosition == RobotPosition.CENTER) {
-    		addSequential(new DriveToLimitSwitchCommand(0, .4, Robot.chassisSubsystem.getTowerSensor(), 79));
-    		addSequential(new GearReleaseCommand());
-//    		addSequential(new DriveToEncoderDistanceCommand(0, -.2, 10));
+    	if (boilerPosition == BoilerPosition.LEFT) {
+
+        	if (robotPosition == RobotPosition.CENTER) {
+        		
+        		// Do Gear
+           		addSequential(new DriveToLimitSwitchCommand(0, .4, Robot.chassisSubsystem.getTowerSensor(), 79));
+        		addSequential(new GearReleaseCommand());
+        		addSequential(new DriveToEncoderDistanceCommand(0, -.2, 20));
+        		
+        		if (shootMode == ShootMode.GEAR_SHOOT) {
+	        		addSequential(new RotateToHeadingCommand(240));
+	        		addSequential(new DriveToEncoderDistanceCommand(240, .6, 90));
+        		}
+        	}
+        	
+        	if (robotPosition == RobotPosition.LEFT) {
+        	
+        		// Do Gear
+        		addSequential(new DriveToEncoderDistanceCommand(0, .5, 92));
+        		addSequential(new RotateToHeadingCommand(60));
+        		addSequential(new DriveToLimitSwitchCommand(60, .2, Robot.chassisSubsystem.getTowerSensor(), 32));
+        		addSequential(new GearReleaseCommand());
+        		addSequential(new DriveToEncoderDistanceCommand(60, -.5, 25));
+        		
+        		if (shootMode == ShootMode.GEAR_ONLY) {
+        			addSequential(new RotateToHeadingCommand(0));
+        			addSequential(new DriveToEncoderDistanceCommand(0, .5, 30));
+        		}
+        		
+        		if (shootMode == ShootMode.GEAR_SHOOT) {
+	        		addSequential(new RotateToHeadingCommand(215));
+	        		addSequential(new DriveToEncoderDistanceCommand(215, .5, 60));
+        		}
+        		
+        	}
+        	if (robotPosition == RobotPosition.RIGHT) {
+        		
+        		// Do Gear
+        		addSequential(new DriveToEncoderDistanceCommand(0, .5, 94));
+        		addSequential(new RotateToHeadingCommand(301));
+    			addSequential(new DriveToLimitSwitchCommand(301, .2, Robot.chassisSubsystem.getTowerSensor(), 28));
+    			addSequential(new GearReleaseCommand());
+    			addSequential(new DriveToEncoderDistanceCommand(301, -.5, 25));
+    			
+    			// Since you won't be able to shoot from the right side, just drive back and straight
+    			if (shootMode == ShootMode.GEAR_ONLY || shootMode == ShootMode.GEAR_SHOOT) {
+        			addSequential(new RotateToHeadingCommand(0));
+        			addSequential(new DriveToEncoderDistanceCommand(0, .5, 30));
+        		}
+    			
+    		
+        	}
     	}
-    	if (robotPosition == RobotPosition.LEFT) {
-    		addSequential(new DriveToEncoderDistanceCommand(0, .5, 96));
-    		addSequential(new RotateToHeadingCommand(60));
-    		addSequential(new DriveToLimitSwitchCommand(60, .2, Robot.chassisSubsystem.getTowerSensor(), 32));
-    	}
-    	if (robotPosition == robotPosition.RIGHT) {
-    		addSequential(new DriveToEncoderDistanceCommand(0, .5, 94));
-    		addSequential(new RotateToHeadingCommand(301));
-			addSequential(new DriveToLimitSwitchCommand(301, .2, Robot.chassisSubsystem.getTowerSensor(), 28));
-    	}
+    	
     
         // Add Commands here:
         // e.g. addSequential(new Command1());

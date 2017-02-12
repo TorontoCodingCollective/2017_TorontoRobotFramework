@@ -60,7 +60,7 @@ public class AutoSelector {
 		switch (shootMode.getSelected()) {
 		case "Gear":      return ShootMode.GEAR_ONLY;
 		case "GearShoot": return ShootMode.GEAR_SHOOT;
-		default:          return ShootMode.SHOOT_GEAR;
+		default:          return ShootMode.GEAR_ONLY;
 		}
 	}
 
