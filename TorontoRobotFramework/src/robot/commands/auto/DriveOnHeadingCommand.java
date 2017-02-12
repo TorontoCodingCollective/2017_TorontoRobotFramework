@@ -1,7 +1,5 @@
 package robot.commands.auto;
 
-import java.util.IllegalFormatCodePointException;
-
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
 import robot.RobotConst;
@@ -32,10 +30,15 @@ public abstract class DriveOnHeadingCommand extends Command {
 	 * @param speed to drive (-1.0 to 1.0).
 	 */
 	public DriveOnHeadingCommand(double heading, double speed) {
+		
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.chassisSubsystem);
+		
 		this.heading  = Math.abs(heading);
 		this.setSpeed = Math.abs(speed);
+		
+		// FIXME: The heading can never be negative, so that part of the 
+		//        if statement does nothing.
 		if(heading<0 || speed <0){
 			direction = Direction.BACKWARDS;
 		}
@@ -96,13 +99,13 @@ public abstract class DriveOnHeadingCommand extends Command {
 				// Pivot based on the error direction
 				if (angleError > 0d) {
 
-					// If the angle error is negative, then turn clockwise to close the error
+					// If the angle error is positive, then turn clockwise to close the error
 					leftSpeed  =   RobotConst.GYRO_PIVOT_MAX_SPEED;
 					rightSpeed = - RobotConst.GYRO_PIVOT_MAX_SPEED;
 
 				} else {
 
-					// If the angle error is negative, then turn clockwise to close the error
+					// If the angle error is negative, then turn counter-clockwise to close the error
 					leftSpeed  = - RobotConst.GYRO_PIVOT_MAX_SPEED;
 					rightSpeed =   RobotConst.GYRO_PIVOT_MAX_SPEED;
 
@@ -121,10 +124,10 @@ public abstract class DriveOnHeadingCommand extends Command {
 				leftSpeed  = setSpeed * rampPercent;
 				rightSpeed = setSpeed * rampPercent;
 
-				// FIXME:
-				// Slow down one motor based on the error.
+				// Slow down one motor based on the PID output.
 				if (gyroPidOutput > 0) {
 
+					// adjust clockwise
 					rightSpeed -= gyroPidOutput;
 
 					if (rightSpeed < -setSpeed) {
@@ -133,6 +136,8 @@ public abstract class DriveOnHeadingCommand extends Command {
 
 				}
 				else {
+
+					// adjust counter-clockwise
 					leftSpeed +=  gyroPidOutput;
 
 					if (leftSpeed < -setSpeed) {
@@ -145,6 +150,7 @@ public abstract class DriveOnHeadingCommand extends Command {
 
 			Robot.chassisSubsystem.setMotorSpeeds(leftSpeed, rightSpeed);
 			break;
+			
 		case BACKWARDS:
 
 			leftSpeed  = 0d;
@@ -175,13 +181,14 @@ public abstract class DriveOnHeadingCommand extends Command {
 				// Pivot based on the error direction
 				if (angleError < 0d) {
 
-					// If the angle error is negative, then turn clockwise to close the error
+					// If the angle error is positive, then turn clockwise to close the error
+					// Note: the speeds are inverted below.
 					leftSpeed  =  -RobotConst.GYRO_PIVOT_MAX_SPEED;
 					rightSpeed =  RobotConst.GYRO_PIVOT_MAX_SPEED;
 
 				} else {
 
-					// If the angle error is negative, then turn clockwise to close the error
+					// If the angle error is negative, then turn counter-clockwise to close the error
 					leftSpeed  =  RobotConst.GYRO_PIVOT_MAX_SPEED;
 					rightSpeed =   -RobotConst.GYRO_PIVOT_MAX_SPEED;
 
@@ -200,10 +207,10 @@ public abstract class DriveOnHeadingCommand extends Command {
 				leftSpeed  = setSpeed * rampPercent;
 				rightSpeed = setSpeed * rampPercent;
 
-				// FIXME:
-				// Slow down one motor based on the error.
+				// Slow down one motor based on the PID output.
 				if (gyroPidOutput < 0) {
 
+					// adjust counter-clockwise
 					rightSpeed += gyroPidOutput;
 
 					if (rightSpeed > setSpeed) {
@@ -212,6 +219,8 @@ public abstract class DriveOnHeadingCommand extends Command {
 
 				}
 				else {
+
+					// adjust clockwise
 					leftSpeed -=  gyroPidOutput;
 
 					if (leftSpeed > setSpeed) {
