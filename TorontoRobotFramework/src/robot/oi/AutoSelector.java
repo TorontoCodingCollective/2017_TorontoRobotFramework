@@ -7,7 +7,7 @@ public class AutoSelector {
 
 	public enum RobotPosition { CENTER, LEFT, RIGHT };
 	public enum BoilerPosition { LEFT, RIGHT };
-	public enum ShootMode { GEAR_ONLY, GEAR_SHOOT, SHOOT_GEAR };
+	public enum ShootMode { GEAR_ONLY, GEAR_SHOOT, GEAR_HOPPER, HOPPER_SHOOT };
 	
 	SendableChooser<String> robotPosition;
 	SendableChooser<String> boilerPosition;
@@ -30,7 +30,8 @@ public class AutoSelector {
 		shootMode = new SendableChooser<String>();
 		shootMode.addDefault("Gear Only",  "Gear");
 		shootMode.addObject("Gear and Shoot",  "GearShoot");
-		shootMode.addObject("Shoot and Gear",  "ShootGear");
+		shootMode.addObject("Gear and Hopper",  "GearHopper");
+		shootMode.addObject("Hopper and Shoot", "HopperShoot");
 	}
 	
 	public void updateSmartDashboard() {
@@ -58,9 +59,11 @@ public class AutoSelector {
 
 	public ShootMode getShootMode() {
 		switch (shootMode.getSelected()) {
-		case "Gear":      return ShootMode.GEAR_ONLY;
-		case "GearShoot": return ShootMode.GEAR_SHOOT;
-		default:          return ShootMode.GEAR_ONLY;
+		case "Gear":      	return ShootMode.GEAR_ONLY;
+		case "GearShoot": 	return ShootMode.GEAR_SHOOT;
+		case "GearHopper": 	return ShootMode.GEAR_HOPPER;
+		case "HopperShoot": return ShootMode.HOPPER_SHOOT;
+		default:          	return ShootMode.GEAR_ONLY;
 		}
 	}
 
