@@ -2,20 +2,20 @@
 package robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import robot.Robot;
-import robot.commands.auto.DriveToEncoderDistanceCommand;
-import robot.commands.auto.RotateToHeadingCommand;
+import robot.commands.JoystickCommand.ButtonState;
+import robot.subsystems.GearSubsystem.GearState;
 
 /**
- * This command closes the gear
+ *
  */
 public class DefaultGearCommand extends Command {
+
+	ButtonState gearButtonState = ButtonState.RELEASED;
 
 	public DefaultGearCommand() {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.gearSubsystem);
-		requires(Robot.chassisSubsystem);
 	}
 
 	// Called just before this Command runs the first time
@@ -25,9 +25,16 @@ public class DefaultGearCommand extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-
-		if (Robot.gearSubsystem.getCurrentState() == true && Robot.chassisSubsystem.getSpeed() > 0.3) {
-			Robot.gearSubsystem.close();
+		
+    	if (Robot.oi.getGearToggleState()) {
+    		Robot.gearSubsystem.open();
+    	} else {
+    		Robot.gearSubsystem.close();
+    	}
+    	
+		if (       Robot.gearSubsystem.getCurrentState() == GearState.OPEN
+				&& Robot.chassisSubsystem.getSpeed() > 0.2) {
+			Robot.oi.setGearButton(false);
 			return;
 		}
 

@@ -16,7 +16,7 @@ public class RobotConst {
 	/** WpiLib compatible NOT inverted indicator {@code boolean false} which can be 
 	 * used to make the robot code more readable */
 	public static final boolean NOT_INVERTED = false;
-	
+
 	/** 
 	 * Drive Max Speed is the maximum encoder feedback rate that is received from the 
 	 * drive encoders with an unloaded robot (robot on blocks).  This represents the 
@@ -53,6 +53,12 @@ public class RobotConst {
     /** Gyro Sensitivity for calibration of the rotational rate of the gyro */
     public static double GYRO_SENSITIVITY = .00172;
     
+    
+	public static final double ULTRASONIC_VOLTAGE_20IN = 0.183;
+	public static final double ULTRASONIC_VOLTAGE_40IN = 0.376;
+	public static final double ULTRASONIC_VOLTAGE_80IN = 0.767;
+	
+
     // This static initializer is used to adjust the constants for the 
     // robot based on which robot is selected.
     static {
@@ -61,8 +67,24 @@ public class RobotConst {
     	// SET THE ROBOT NUMBER HERE
     	//****************************
     	
-    	ROBOT = 1321;
+    	ROBOT = 1310;
     	
+    	// Robot 1310 is the production robot
+    	if (ROBOT == 1310) {
+    	    
+    		DRIVE_ENCODER_MAX_SPEED = 3300;
+    	    DRIVE_ENCODER_COUNTS_PER_IN = 397;
+    	    
+    	    GYRO_PID_PROPORTIONAL_GAIN = 3.0;
+    	    GYRO_PID_INTEGRAL_GAIN = .15;
+    	    GYRO_PIVOT_MAX_SPEED = .35; 
+    	    
+    	    DRIVE_PID_PROPORTIONAL_GAIN = 0.3;
+    	    DRIVE_PID_INTEGRAL_GAIN = 0.0;
+    	    
+    	    GYRO_SENSITIVITY = .00161;
+    	}
+
     	// Robot 1320 has smaller 3" wheels
     	if (ROBOT == 1320) {
     	    

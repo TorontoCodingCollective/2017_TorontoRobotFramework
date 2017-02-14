@@ -37,6 +37,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Start:		
  * Back:		Toggle (test)
  * LStickPush   Toggle Motor Pids
+ * RStickPush   Toggle Gear State
  * 
  * POV:       	RotateToAngle
  *
@@ -51,6 +52,8 @@ public class OI {
 	
 	private T_Toggle motorPidToggle = new T_Toggle(driverController, T_Button.LEFT_STICK, true);
 	
+	private T_Toggle gearToggle = new T_Toggle(driverController, T_Button.RIGHT_STICK, false);
+
 	public boolean getDriverRumbleStart() {
 		return driverController.getButton(T_Button.RIGHT_BUMPER);
 	}
@@ -99,11 +102,16 @@ public class OI {
 		return driverController.getButton(T_Button.START);
 	}
 	
+	public boolean getGearToggleState() {
+		return gearToggle.getToggleState();
+	}
+	
 	public void updatePeriodic() {
 		
 		// Update all toggles
 		driverTestToggle.update();
 		motorPidToggle.update();
+		gearToggle.update();
 		
 		// Update all smartdashboard values
 		autoSelector.updateSmartDashboard();
@@ -112,6 +120,10 @@ public class OI {
 				driverController.toString());
 		SmartDashboard.putBoolean("Toggle", getDriverToggle());
 		SmartDashboard.putBoolean("MotorPidToggle", getMotorPidEnabled());
+	}
+
+	public void setGearButton(boolean b) {
+		gearToggle.setToggleState(b);
 	}
 }
 

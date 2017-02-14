@@ -28,4 +28,10 @@ public class RobotMap {
     
     public static final int FRONT_LIMIT_SWITCH_DIO_PORT = 3;
     
+    // Pneumatic Solenoids
+    public static final int SHIFTER_SOLENOID = 0;
+    public static final int GEAR_SOLENOID_A = 1;
+    public static final int GEAR_SOLENOID_B = 2;
+    
+    
 }
