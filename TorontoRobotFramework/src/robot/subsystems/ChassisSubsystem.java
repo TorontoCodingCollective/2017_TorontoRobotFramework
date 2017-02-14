@@ -277,8 +277,6 @@ public class ChassisSubsystem extends T_Subsystem {
 
 		SmartDashboard.putData("Left Motor PID", leftMotorPidController);
 		SmartDashboard.putData("Right Motor PID", rightMotorPidController);
-		SmartDashboard.putNumber("Left Motor Setpoint", leftMotorPidController.getSetpoint());
-		SmartDashboard.putNumber("Right Motor Setpoint", rightMotorPidController.getSetpoint());
 		SmartDashboard.putNumber("Left Motor Error", leftMotorPidController.getError());
 		SmartDashboard.putNumber("Right Motor Error", rightMotorPidController.getError());
 		SmartDashboard.putNumber("Left Motor Output", leftMotorPidController.get());
