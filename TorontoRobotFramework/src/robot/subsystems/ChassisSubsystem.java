@@ -10,9 +10,9 @@ import com.toronto.sensors.T_Encoder;
 import com.toronto.sensors.T_Gyro;
 import com.toronto.sensors.T_LimitSwitch;
 import com.toronto.sensors.T_LimitSwitch.DefaultState;
+import com.toronto.sensors.T_UltrasonicSensor;
 import com.toronto.subsystems.T_Subsystem;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -44,9 +44,8 @@ public class ChassisSubsystem extends T_Subsystem {
 
 	private boolean drivePidsEnabled = false;
 
-	public AnalogInput ultrasonicSensor = new AnalogInput(1);
-	
 	public T_LimitSwitch towerSensor = new T_LimitSwitch(RobotMap.FRONT_LIMIT_SWITCH_DIO_PORT, DefaultState.TRUE);
+	public T_UltrasonicSensor ultrasonicSensor = new T_UltrasonicSensor(1);
 
 	public Solenoid shifterSolenoid = new Solenoid(RobotMap.SHIFTER_SOLENOID);
 	
@@ -192,8 +191,10 @@ public class ChassisSubsystem extends T_Subsystem {
 		gyro.setSensitivity(RobotConst.GYRO_SENSITIVITY);
 		gyroPidController.disable();
 
+		// Calibrate the ultrasonic
+		ultrasonicSensor.calibrate(RobotConst.ULTRASONIC_VOLTAGE_20IN, RobotConst.ULTRASONIC_VOLTAGE_40IN, RobotConst.ULTRASONIC_VOLTAGE_80IN);
+
 		setLowGear();
-		
 		enableDrivePids();
 	}
 
@@ -290,10 +291,10 @@ public class ChassisSubsystem extends T_Subsystem {
 		SmartDashboard.putNumber("Gyro PID Error", gyroPidController.getError());
 		SmartDashboard.putNumber("Gyro PID Output", gyroPidController.get());
 
-		SmartDashboard.putNumber("Raw Ultrasonic Value", ultrasonicSensor.getVoltage());
-		
 		SmartDashboard.putBoolean("Tower Sensor", towerSensor.atLimit());
 
+		SmartDashboard.putNumber("Ultrasonic voltage", ultrasonicSensor.getVoltage());
+		SmartDashboard.putNumber("Ultrasonic distance", ultrasonicSensor.getDistance());
 	}
 
 }
