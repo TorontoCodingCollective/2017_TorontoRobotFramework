@@ -6,21 +6,20 @@ import robot.Robot;
 import robot.subsystems.GearSubsystem.GearState;
 
 /**
- *
+ * This command releases the gear
  */
 public class GearReleaseCommand extends Command {
 
-	
     public GearReleaseCommand() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.gearSubsystem);
         requires(Robot.chassisSubsystem);
     }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-//    	Robot.gearSubsystem.close();
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+//		Robot.gearSubsystem.open();
+	}
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
@@ -33,15 +32,16 @@ public class GearReleaseCommand extends Command {
     	}
     }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	return timeSinceInitialized() > 1.0;
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		return timeSinceInitialized() > 1.0;
+	}
 
 	@Override
 	protected void end() {
 	}
 
 	@Override
-	protected void interrupted() {}
+	protected void interrupted() {
+	}
 }
