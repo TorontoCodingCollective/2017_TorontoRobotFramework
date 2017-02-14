@@ -5,7 +5,7 @@ import com.toronto.subsystems.T_Subsystem;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.commands.GearCommand;
+import robot.commands.DefaultGearCommand;
 import robot.commands.JoystickCommand;
 
 public class GearSubsystem extends T_Subsystem {
@@ -19,7 +19,7 @@ public class GearSubsystem extends T_Subsystem {
 	private Solenoid release = new Solenoid(4);
 
 	public void initDefaultCommand() {
-		setDefaultCommand(new GearCommand());
+		setDefaultCommand(new DefaultGearCommand());
 	}
 	
 	public void open() { 
@@ -31,7 +31,6 @@ public class GearSubsystem extends T_Subsystem {
 	}
 
 	public boolean getCurrentState() {
-//		return true;
 		return release.get();
 	}
 
