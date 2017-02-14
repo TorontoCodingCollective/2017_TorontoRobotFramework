@@ -73,7 +73,7 @@ public class RobotConst {
     	if (ROBOT == 1310) {
     	    
     		DRIVE_ENCODER_MAX_SPEED = 3300;
-    	    DRIVE_ENCODER_COUNTS_PER_IN = 397;
+    	    DRIVE_ENCODER_COUNTS_PER_IN = 396;
     	    
     	    GYRO_PID_PROPORTIONAL_GAIN = 3.0;
     	    GYRO_PID_INTEGRAL_GAIN = .15;

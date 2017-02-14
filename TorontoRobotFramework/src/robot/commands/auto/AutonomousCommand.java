@@ -31,13 +31,13 @@ public class AutonomousCommand extends CommandGroup {
         	if (robotPosition == RobotPosition.CENTER) {
         		
         		// Do Gear
-           		addSequential(new DriveToLimitSwitchCommand(0, .4, Robot.chassisSubsystem.getTowerSensor(), 79));
+           		addSequential(new DriveToLimitSwitchCommand(0, .4, Robot.chassisSubsystem.getTowerSensor(), 84));
         		addSequential(new GearReleaseCommand());
-        		addSequential(new DriveToEncoderDistanceCommand(0, -.2, 20));
+        		addSequential(new DriveToEncoderDistanceCommand(0, -.2, 24));
         		
         		if (shootMode == ShootMode.GEAR_SHOOT) {
 	        		addSequential(new RotateToHeadingCommand(120));
-	        		addSequential(new DriveToEncoderDistanceCommand(120, .6, 90));
+	        		addSequential(new DriveToEncoderDistanceCommand(120, .6, 95));
         		}
         	}
         	
@@ -86,33 +86,33 @@ public class AutonomousCommand extends CommandGroup {
         	if (robotPosition == RobotPosition.CENTER) {
         		
         		// Do Gear
-           		addSequential(new DriveToLimitSwitchCommand(0, .4, Robot.chassisSubsystem.getTowerSensor(), 79));
+           		addSequential(new DriveToLimitSwitchCommand(0, .4, Robot.chassisSubsystem.getTowerSensor(), 84));
         		addSequential(new GearReleaseCommand());
-        		addSequential(new DriveToEncoderDistanceCommand(0, -.2, 20));
+        		addSequential(new DriveToEncoderDistanceCommand(0, -.2, 24));
         		
         		if (shootMode == ShootMode.GEAR_SHOOT) {
 	        		addSequential(new RotateToHeadingCommand(240));
-	        		addSequential(new DriveToEncoderDistanceCommand(240, .6, 90));
+	        		addSequential(new DriveToEncoderDistanceCommand(240, .6, 95));
         		}
         	}
         	
         	if (robotPosition == RobotPosition.LEFT) {
         	
         		// Do Gear
-        		addSequential(new DriveToEncoderDistanceCommand(0, .5, 92));
+        		addSequential(new DriveToEncoderDistanceCommand(0, .5, 96));
         		addSequential(new RotateToHeadingCommand(60));
-        		addSequential(new DriveToLimitSwitchCommand(60, .2, Robot.chassisSubsystem.getTowerSensor(), 32));
+        		addSequential(new DriveToLimitSwitchCommand(60, .2, Robot.chassisSubsystem.getTowerSensor(), 38));
         		addSequential(new GearReleaseCommand());
-        		addSequential(new DriveToEncoderDistanceCommand(60, -.5, 25));
+        		addSequential(new DriveToEncoderDistanceCommand(60, -.5, 29));
         		
         		if (shootMode == ShootMode.GEAR_ONLY) {
         			addSequential(new RotateToHeadingCommand(0));
-        			addSequential(new DriveToEncoderDistanceCommand(0, .5, 30));
+        			addSequential(new DriveToEncoderDistanceCommand(0, .5, 34));
         		}
         		
         		if (shootMode == ShootMode.GEAR_SHOOT) {
 	        		addSequential(new RotateToHeadingCommand(215));
-	        		addSequential(new DriveToEncoderDistanceCommand(215, .5, 60));
+	        		addSequential(new DriveToEncoderDistanceCommand(215, .5, 64));
         		}
         		
         	}
