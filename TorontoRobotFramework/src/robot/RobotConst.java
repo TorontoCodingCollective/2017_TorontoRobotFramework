@@ -61,8 +61,24 @@ public class RobotConst {
     	// SET THE ROBOT NUMBER HERE
     	//****************************
     	
-    	ROBOT = 1321;
+    	ROBOT = 1310;
     	
+    	// Robot 1310 is the production robot
+    	if (ROBOT == 1310) {
+    	    
+    		DRIVE_ENCODER_MAX_SPEED = 3300;
+    	    DRIVE_ENCODER_COUNTS_PER_IN = 397;
+    	    
+    	    GYRO_PID_PROPORTIONAL_GAIN = 3.0;
+    	    GYRO_PID_INTEGRAL_GAIN = .15;
+    	    GYRO_PIVOT_MAX_SPEED = .35; 
+    	    
+    	    DRIVE_PID_PROPORTIONAL_GAIN = 0.3;
+    	    DRIVE_PID_INTEGRAL_GAIN = 0.0;
+    	    
+    	    GYRO_SENSITIVITY = .00161;
+    	}
+
     	// Robot 1320 has smaller 3" wheels
     	if (ROBOT == 1320) {
     	    
