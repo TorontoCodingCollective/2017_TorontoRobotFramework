@@ -67,7 +67,7 @@ public class RobotConst {
     	// SET THE ROBOT NUMBER HERE
     	//****************************
     	
-    	ROBOT = 1321;
+    	ROBOT = 1320;
     	
     	// Robot 1320 has smaller 3" wheels
     	if (ROBOT == 1320) {
