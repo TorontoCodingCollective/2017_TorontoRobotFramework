@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import robot.Robot;
 import robot.commands.auto.DriveToEncoderDistanceCommand;
+import robot.commands.auto.DriveToUltrasonicDistance;
 import robot.commands.auto.RotateToHeadingCommand;
 
 /**
@@ -79,6 +80,10 @@ public class JoystickCommand extends Command {
     		if (! Robot.oi.getCalibrate()) {
     			calibrateState = ButtonState.RELEASED;
     		}
+    	}
+    	if (Robot.oi.getUltrasonicDistanceCommand()){
+    		Scheduler.getInstance().add(new DriveToUltrasonicDistance(0, 0.5, 24));
+    		
     	}
 
     	// Turn on or off the PIDs

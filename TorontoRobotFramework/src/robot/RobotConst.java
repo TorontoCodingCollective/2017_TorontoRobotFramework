@@ -17,6 +17,8 @@ public class RobotConst {
 	 * used to make the robot code more readable */
 	public static final boolean NOT_INVERTED = false;
 
+	public enum Direction { FORWARD, BACKWARDS };
+
 	/** 
 	 * Drive Max Speed is the maximum encoder feedback rate that is received from the 
 	 * drive encoders with an unloaded robot (robot on blocks).  This represents the 
@@ -67,7 +69,7 @@ public class RobotConst {
     	// SET THE ROBOT NUMBER HERE
     	//****************************
     	
-    	ROBOT = 1310;
+    	ROBOT = 1320;
     	
     	// Robot 1310 is the production robot
     	if (ROBOT == 1310) {

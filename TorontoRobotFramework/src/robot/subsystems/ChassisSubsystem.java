@@ -49,6 +49,7 @@ public class ChassisSubsystem extends T_Subsystem {
 
 	public Solenoid shifterSolenoid = new Solenoid(RobotMap.SHIFTER_SOLENOID);
 	
+	
 	public ChassisSubsystem() {
 
 		// Use the robot number to determine which type of motor drive to use.  The

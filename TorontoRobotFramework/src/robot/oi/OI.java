@@ -105,7 +105,10 @@ public class OI {
 	public boolean getGearToggleState() {
 		return gearToggle.getToggleState();
 	}
-	
+	public boolean getUltrasonicDistanceCommand(){
+		return driverController.getButton(T_Button.X);
+	}
+		
 	public void updatePeriodic() {
 		
 		// Update all toggles

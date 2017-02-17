@@ -3,6 +3,7 @@ package robot.commands.auto;
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
 import robot.RobotConst;
+import robot.RobotConst.Direction;
 
 /**
  * The DriveOnHeading command is the base class for all of the auto commands as
@@ -13,8 +14,6 @@ import robot.RobotConst;
 public abstract class DriveOnHeadingCommand extends Command {
 
 	private enum Step { COARSE, FINE };
-
-	private enum Direction { FORWARD, BACKWARDS };
 
 	protected double heading;
 	protected double setSpeed;
@@ -49,6 +48,10 @@ public abstract class DriveOnHeadingCommand extends Command {
 		}
 	}
 
+	public void setDirection(Direction direction) {
+		//FIXME:  do something
+	}
+	
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
@@ -272,4 +275,5 @@ public abstract class DriveOnHeadingCommand extends Command {
 
 	}
 
+	
 }
