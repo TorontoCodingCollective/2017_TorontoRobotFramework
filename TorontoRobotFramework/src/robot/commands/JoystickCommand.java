@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import robot.Robot;
 import robot.commands.auto.DriveToEncoderDistanceCommand;
+import robot.commands.auto.DriveToUltrasonicDistance;
 import robot.commands.auto.RotateToHeadingCommand;
-import robot.subsystems.ChassisSubsystem;
 
 /**
  *
@@ -18,7 +18,6 @@ public class JoystickCommand extends Command {
 	ButtonState driveStraightState = ButtonState.RELEASED;
 	ButtonState povState           = ButtonState.RELEASED;
 	ButtonState calibrateState     = ButtonState.RELEASED;
-	ButtonState gearState		   = ButtonState.RELEASED;
 	
     public JoystickCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -32,21 +31,6 @@ public class JoystickCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     
-    	switch (gearState) {
-    	case RELEASED:
-    		if (Robot.oi.getStartGearCommand()) {
-	    		Scheduler.getInstance().add(new GearReleaseCommand());
-	    		gearState = ButtonState.PRESSED;
-	    		return;
-    		}
-    		break;
-    	case PRESSED:
-    		if (!Robot.oi.getStartGearCommand()) {
-    			gearState = ButtonState.RELEASED;
-    		}
-    		break;
-    	}
-    	
     	switch (driveStraightState) {
     	case RELEASED:
 	    	if (Robot.oi.getStartDriveStraightCommand()) {
@@ -81,6 +65,9 @@ public class JoystickCommand extends Command {
     	if (Robot.oi.getDriverRumbleStart()) { Robot.oi.setDriverRumble(0.8); }
     	else  								 { Robot.oi.setDriverRumble(0); }
     	
+    	if (Robot.oi.getDriverRumbleStart()) { Robot.chassisSubsystem.setHighGear(); }
+    	else  								 { Robot.chassisSubsystem.setLowGear(); }
+    	
     	switch (calibrateState) {
     	case RELEASED:
 	    	if (Robot.oi.getCalibrate()) {
@@ -93,6 +80,10 @@ public class JoystickCommand extends Command {
     		if (! Robot.oi.getCalibrate()) {
     			calibrateState = ButtonState.RELEASED;
     		}
+    	}
+    	if (Robot.oi.getUltrasonicDistanceCommand()){
+    		Scheduler.getInstance().add(new DriveToUltrasonicDistance(0, 0.5, 24));
+    		
     	}
 
     	// Turn on or off the PIDs

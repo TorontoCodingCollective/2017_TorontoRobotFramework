@@ -2,6 +2,7 @@
 package robot.subsystems;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.TalonControlMode;
 import com.toronto.pid.T_GyroPidController;
 import com.toronto.pid.T_MotorSpeedPidController;
 import com.toronto.sensors.T_DioEncoder;
@@ -12,6 +13,7 @@ import com.toronto.sensors.T_LimitSwitch.DefaultState;
 import com.toronto.sensors.T_UltrasonicSensor;
 import com.toronto.subsystems.T_Subsystem;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -45,13 +47,41 @@ public class ChassisSubsystem extends T_Subsystem {
 	public T_LimitSwitch towerSensor = new T_LimitSwitch(RobotMap.FRONT_LIMIT_SWITCH_DIO_PORT, DefaultState.TRUE);
 	public T_UltrasonicSensor ultrasonicSensor = new T_UltrasonicSensor(1);
 
+	public Solenoid shifterSolenoid = new Solenoid(RobotMap.SHIFTER_SOLENOID);
+	
+	
 	public ChassisSubsystem() {
 
 		// Use the robot number to determine which type of motor drive to use.  The
 		// 1320 robot uses the PWM Victor controllers
 		// 1321 uses CAN bus TalonSRX controllers.
+		// 1310 uses 4 CAN Talons.
 
-		if (RobotConst.ROBOT == 1321) {
+		if (RobotConst.ROBOT == 1310) {
+
+			// Use the CAN bus motor controllers and encoders
+			leftMotor  = new CANTalon(RobotMap.LEFT_MOTOR_CAN_ADDRESS);
+			leftMotor.setInverted(true);
+			((CANTalon) leftMotor).enableBrakeMode(true);
+			
+			CANTalon leftFollowerMotor  = new CANTalon(RobotMap.LEFT_MOTOR_CAN_ADDRESS+2);
+			leftFollowerMotor.enableBrakeMode(true);
+			leftFollowerMotor.changeControlMode(TalonControlMode.Follower);
+			leftFollowerMotor.set(RobotMap.LEFT_MOTOR_CAN_ADDRESS);
+			
+			rightMotor = new CANTalon(RobotMap.RIGHT_MOTOR_CAN_ADDRESS);
+			((CANTalon) rightMotor).enableBrakeMode(true);
+			CANTalon rightFollwerMotor  = new CANTalon(RobotMap.RIGHT_MOTOR_CAN_ADDRESS+2);
+			
+			rightFollwerMotor.enableBrakeMode(true);
+			rightFollwerMotor.changeControlMode(TalonControlMode.Follower);
+			rightFollwerMotor.set(RobotMap.RIGHT_MOTOR_CAN_ADDRESS);
+
+			leftEncoder  = new T_SrxEncoder((CANTalon) leftMotor, RobotConst.INVERTED);
+			rightEncoder = new T_SrxEncoder((CANTalon) rightMotor);
+
+		}
+		else if (RobotConst.ROBOT == 1321) {
 
 			// Use the CAN bus motor controllers and encoders
 			leftMotor  = new CANTalon(RobotMap.LEFT_MOTOR_CAN_ADDRESS);
@@ -133,6 +163,14 @@ public class ChassisSubsystem extends T_Subsystem {
 		drivePidsEnabled = false;
 	}
 
+	public void setHighGear() {
+		shifterSolenoid.set(false);
+	}
+
+	public void setLowGear() {
+		shifterSolenoid.set(true);
+	}
+
 	public void setMotorSpeeds(double leftSpeed, double rightSpeed) {
 
 		if (drivePidsEnabled) {
@@ -156,7 +194,8 @@ public class ChassisSubsystem extends T_Subsystem {
 
 		// Calibrate the ultrasonic
 		ultrasonicSensor.calibrate(RobotConst.ULTRASONIC_VOLTAGE_20IN, RobotConst.ULTRASONIC_VOLTAGE_40IN, RobotConst.ULTRASONIC_VOLTAGE_80IN);
-		
+
+		setLowGear();
 		enableDrivePids();
 	}
 
@@ -239,8 +278,6 @@ public class ChassisSubsystem extends T_Subsystem {
 
 		SmartDashboard.putData("Left Motor PID", leftMotorPidController);
 		SmartDashboard.putData("Right Motor PID", rightMotorPidController);
-		SmartDashboard.putNumber("Left Motor Setpoint", leftMotorPidController.getSetpoint());
-		SmartDashboard.putNumber("Right Motor Setpoint", rightMotorPidController.getSetpoint());
 		SmartDashboard.putNumber("Left Motor Error", leftMotorPidController.getError());
 		SmartDashboard.putNumber("Right Motor Error", rightMotorPidController.getError());
 		SmartDashboard.putNumber("Left Motor Output", leftMotorPidController.get());
@@ -258,5 +295,6 @@ public class ChassisSubsystem extends T_Subsystem {
 		SmartDashboard.putNumber("Ultrasonic voltage", ultrasonicSensor.getVoltage());
 		SmartDashboard.putNumber("Ultrasonic distance", ultrasonicSensor.getDistance());
 	}
+
 }
 

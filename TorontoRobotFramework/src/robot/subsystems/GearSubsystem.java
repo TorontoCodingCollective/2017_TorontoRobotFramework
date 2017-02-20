@@ -3,46 +3,48 @@ package robot.subsystems;
 
 import com.toronto.subsystems.T_Subsystem;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.commands.GearCommand;
-import robot.commands.JoystickCommand;
+import robot.RobotMap;
+import robot.commands.DefaultGearCommand;
 
 public class GearSubsystem extends T_Subsystem {
 
+	public enum GearState { OPEN, CLOSED };
 	/*
 	 * *************************************************************************
 	 * *** Hardware declarations
 	 * 
 	 * Declare all motors and sensors here
 	 ******************************************************************************/
-	private Solenoid release = new Solenoid(4);
+	private DoubleSolenoid gearSolenoid = 
+			new DoubleSolenoid(RobotMap.GEAR_SOLENOID_A, RobotMap.GEAR_SOLENOID_B);
 
 	public void initDefaultCommand() {
-		setDefaultCommand(new GearCommand());
+		setDefaultCommand(new DefaultGearCommand());
 	}
 	
 	public void open() { 
-		release.set(false);
+		gearSolenoid.set(Value.kForward);
 	}
 
 	public void close() {
-		release.set(true);
+		gearSolenoid.set(Value.kReverse);
 	}
 
-	public boolean getCurrentState() {
-//		return true;
-		return release.get();
+	public GearState getCurrentState() {
+		return gearSolenoid.get() == Value.kForward ? GearState.OPEN : GearState.CLOSED;
 	}
 
 	@Override
 	public void updatePeriodic() {
 		// Update all SmartDashboard values
-		SmartDashboard.putString("Gear State", release.get() ? "Gear Locked" : "Gear Released");
+		SmartDashboard.putString("Gear State", String.valueOf(getCurrentState()));
 	}
 
 	@Override
 	public void robotInit() {
-		release.set(true);
+		close();
 	}
 }
