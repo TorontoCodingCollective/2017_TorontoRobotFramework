@@ -49,7 +49,7 @@ public abstract class DriveOnHeadingCommand extends Command {
 	}
 
 	public void setDirection(Direction direction) {
-		//FIXME:  do something
+		this.direction = direction;
 	}
 	
 	// Called just before this Command runs the first time
@@ -73,6 +73,7 @@ public abstract class DriveOnHeadingCommand extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		System.out.println(direction);
 		switch (direction) {
 		case FORWARD:
 
@@ -158,7 +159,7 @@ public abstract class DriveOnHeadingCommand extends Command {
 				break;
 
 			}
-
+			System.out.println("Driving Forwards");
 			Robot.chassisSubsystem.setMotorSpeeds(leftSpeed, rightSpeed);
 			break;
 
@@ -256,7 +257,7 @@ public abstract class DriveOnHeadingCommand extends Command {
 				break;
 
 			}
-
+			System.out.println("Driving Backwards");
 			Robot.chassisSubsystem.setMotorSpeeds(-leftSpeed, -rightSpeed);
 			break;
 		}

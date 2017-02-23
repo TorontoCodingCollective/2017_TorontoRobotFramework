@@ -9,8 +9,8 @@ public class DriveToUltrasonicDistance extends DriveOnHeadingCommand {
 	private Direction direction;
 	
     public DriveToUltrasonicDistance(double heading, double speed, double setpointDistance) {
-    
-    	super(heading, Math.abs(speed));
+    	
+    	super(heading, speed);
     	this.setpointDistance = setpointDistance;
     	direction = Direction.FORWARD;
     }
@@ -23,12 +23,14 @@ public class DriveToUltrasonicDistance extends DriveOnHeadingCommand {
     	double currentDistance = Robot.chassisSubsystem.ultrasonicSensor.getDistance();
     	
     	// Check whether to go forward or backward to get to the desired distance
-    	if (setpointDistance <= currentDistance)
+    	if (currentDistance >= setpointDistance)
     	{
-    		direction = Direction.FORWARD;
+    		System.out.println("BACKWARDS");
+    		direction = Direction.BACKWARDS;
     	}
     	else{
-    		direction=Direction.BACKWARDS;
+    		System.out.println("FORWARD");
+    		direction=Direction.FORWARD;
     	}
     		
     	// Set the direction
@@ -42,8 +44,33 @@ public class DriveToUltrasonicDistance extends DriveOnHeadingCommand {
 		
 		// Stop if you are there (beware of direction)
 		double currentDistance = Robot.chassisSubsystem.ultrasonicSensor.getDistance();
-		
-			return false;
+		if (direction==Direction.BACKWARDS)
+		{
+			if (currentDistance<=setpointDistance)
+			{
+				System.out.println("Finished");
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else if (direction==Direction.FORWARD)
+		{
+			if (currentDistance>=setpointDistance)
+			{
+				System.out.println("Finished");
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+			
+			
+		}
+		return false;
 		
 		
 	}		
