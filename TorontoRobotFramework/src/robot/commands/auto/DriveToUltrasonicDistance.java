@@ -34,8 +34,7 @@ public class DriveToUltrasonicDistance extends DriveOnHeadingCommand {
     	}
     		
     	// Set the direction
-    	super.setDirection(direction);
-    	    
+    	super.setDirection(direction);   	    
     	
     }
     
@@ -67,11 +66,9 @@ public class DriveToUltrasonicDistance extends DriveOnHeadingCommand {
 			{
 				return false;
 			}
-			
-			
+					
 		}
-		return false;
-		
+		return false;	
 		
 	}		
 	
